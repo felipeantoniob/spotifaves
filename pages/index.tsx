@@ -22,7 +22,7 @@ export default function Home() {
   const [session, loadingSession] = useSession()
   // const [loading, setLoading] = useState(false)
 
-  const [trackUris, setTrackUris] = useState({})
+  const [trackUris, setTrackUris] = useState({ uris: [] })
   // const [playlistId, setPlaylistId] = useState('')
   const [numberofTracks, setNumberofTracks] = useState(10)
   const [artistSearchQuery, setArtistSearchQuery] = useState('')
@@ -33,7 +33,8 @@ export default function Home() {
 
   let playlistId = ''
 
-  // useEffect(() => console.log(trackUris.uris), [trackUris]);
+  // useEffect(() => console.log(trackUris.uris), [trackUris])
+  // useEffect(() => console.log(trackUris), [trackUris])
   // useEffect(() => console.log('Seed artist: ' + seedArtist.name), [seedArtist])
 
   const genreOptions = seedGenreOptions.map((item) => {
@@ -44,23 +45,23 @@ export default function Home() {
     )
   })
 
-  useEffect(async () => {
+  useEffect(() => {
     if (session) {
-      spotifyApi.setAccessToken(session.accessToken)
-
-      spotifyApi.getAvailableGenreSeeds().then((data) => {
-        let genreSeeds = data.body.genres
-        setSeedGenreOptions(genreSeeds)
-      })
+      const setAccessToken = () => {
+        spotifyApi.setAccessToken(session.accessToken)
+      }
+      setAccessToken()
+      const setGenreSeeds = async () => {
+        spotifyApi.getAvailableGenreSeeds().then((data) => {
+          let genreSeeds = data.body.genres
+          setSeedGenreOptions(genreSeeds)
+        })
+      }
+      setGenreSeeds()
 
       // console.log(session.user.name)
     }
   }, [session])
-
-  // useEffect(() => {
-  //   console.log('Use Effect Playlist ID')
-  //   console.log('Playlist ID updated')
-  // }, [playlistId])
 
   const getTopTracks = async () => {
     try {
