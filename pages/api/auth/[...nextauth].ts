@@ -30,13 +30,13 @@ const spotifyApi = new SpotifyWebApi()
 export default NextAuth({
   providers: [
     Providers.Spotify({
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       scope:
         'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private',
     }),
   ],
-  secret: process.env.SECRET,
+  secret: process.env.NEXT_PUBLIC_SECRET,
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
       // console.log(`Access Token: ${token.accessToken}`)
