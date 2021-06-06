@@ -1,9 +1,6 @@
 import NextAuth from 'next-auth'
-import { session } from 'next-auth/client'
 import Providers from 'next-auth/providers'
-
-const SpotifyWebApi = require('spotify-web-api-node')
-const spotifyApi = new SpotifyWebApi()
+// import { session } from 'next-auth/client'
 
 // const scopes = [
 //   "ugc-image-upload",
@@ -41,6 +38,7 @@ export default NextAuth({
     async jwt(token, user, account, profile, isNewUser) {
       // console.log(`Access Token: ${token.accessToken}`)
       // console.log(account)
+
       if (account?.accessToken) {
         token.accessToken = account.accessToken
 
