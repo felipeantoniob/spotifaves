@@ -1,11 +1,14 @@
 import { Provider } from 'next-auth/client'
-import '../styles/globals.css'
-import 'bootstrap/dist/css/bootstrap.css'
+import { AppProps } from 'next/app'
+import Layout from '../components/Layout'
+import '../styles/main.scss'
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <Provider session={pageProps.session}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </Provider>
   )
 }

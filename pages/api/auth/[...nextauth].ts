@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
-// import { session } from 'next-auth/client'
 
 // const scopes = [
 //   "ugc-image-upload",
@@ -38,10 +37,11 @@ export default NextAuth({
     async jwt(token, user, account, profile, isNewUser) {
       // console.log(`Access Token: ${token.accessToken}`)
       // console.log(account)
+      console.log(profile)
+      console.log(isNewUser)
 
       if (account?.accessToken) {
         token.accessToken = account.accessToken
-
         // console.log(token)
         // console.log(account)
       }

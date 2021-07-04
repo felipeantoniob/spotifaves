@@ -1,0 +1,29 @@
+@use '../vendors/bootstrap' as b;
+@use "../abstracts/variables" as v;
+
+main {
+  background-color: v.$background-color;
+  color: #ffffff;
+
+  .form-control,
+  .form-select,
+  .list-group-item {
+    // background-color: b.$gray-900;
+    background-color: v.$surface-color;
+    color: b.$gray-300;
+    border: 0em !important;
+  }
+
+  // .form-check-input {
+  //   &:checked {
+  //     background-color: b.$gray-700;
+  //     border-color: b.$gray-700;
+  //   }
+  //   &:focus {
+  //     border-color: b.$gray-300;
+  //     outline: 0;
+  //     -webkit-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  //     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  //   }
+  // }
+}

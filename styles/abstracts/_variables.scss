@@ -1,0 +1,9 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+$background-color: #121212;
+$error-color: #cf6679;
+$primary-color: #ce93d8;
+$secondary-color: #ffcc80;
+$surface-color: mix($primary-color, $background-color, 8%);

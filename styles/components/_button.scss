@@ -1,0 +1,63 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+@use '../vendors/bootstrap' as b;
+@use "../abstracts/variables" as v;
+
+.add-button {
+  // background-color: v.$surface-color;
+  color: b.$gray-700;
+
+  border: 0em;
+  border-top-left-radius: 0rem;
+  border-bottom-left-radius: 0rem;
+  //   transition: none !important;
+
+  &:hover {
+    color: b.$gray-500;
+  }
+
+  &:focus,
+  &:active,
+  &:focus:active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.update-button,
+.delete-button {
+  background-color: v.$surface-color !important;
+
+  border: 0em;
+  &:focus,
+  &:active,
+  &:focus:active {
+    color: b.$red-700;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+.update-button {
+  color: b.$yellow-700;
+  &:hover {
+    color: b.$yellow-500;
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    color: b.$yellow-700;
+  }
+}
+.delete-button {
+  // color: b.$red-700;
+  color: v.$error-color;
+  &:hover {
+    color: b.$red-500;
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    color: b.$red-700;
+  }
+}
