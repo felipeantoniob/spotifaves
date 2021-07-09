@@ -61,3 +61,23 @@
     color: b.$red-700;
   }
 }
+
+.log-in-btn {
+  background-color: v.$spotify-green-color;
+  border: none;
+  border-radius: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+
+  &:hover {
+    background-color: lighten(v.$spotify-green-color, 5%);
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    background-color: v.$spotify-green-color;
+
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}

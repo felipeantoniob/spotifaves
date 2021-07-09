@@ -37,19 +37,23 @@ export default NextAuth({
     async jwt(token, user, account, profile, isNewUser) {
       // console.log(`Access Token: ${token.accessToken}`)
       // console.log(account)
+      // console.log(token)
       console.log(profile)
       console.log(isNewUser)
 
       if (account?.accessToken) {
         token.accessToken = account.accessToken
-        // console.log(token)
-        // console.log(account)
+      }
+
+      if (account?.refreshToken) {
+        token.refreshToken = account.refreshToken
       }
 
       return token
     },
     async session(session, token) {
       session.accessToken = token.accessToken
+      session.refreshToken = token.refreshToken
       return session
     },
   },
