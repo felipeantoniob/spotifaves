@@ -3,17 +3,19 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
 import SpotifyWebApi from 'spotify-web-api-node'
+
 import LogIn from '../components/LogIn'
+import { SeedArtistProps, TrackUrisProps } from '../interfaces/index'
 
 const spotifyApi = new SpotifyWebApi()
 
 export default function Home(): JSX.Element {
   const [session] = useSession()
   // const [loading, setLoading] = useState(false)
-  const [trackUris, setTrackUris] = useState({ uris: [] })
+  const [trackUris, setTrackUris] = useState<TrackUrisProps>()
   const [numberofTracks, setNumberofTracks] = useState(10)
   const [artistSearchQuery, setArtistSearchQuery] = useState('')
-  const [seedArtist, setSeedArtist] = useState({ name: '', uri: '' })
+  const [seedArtist, setSeedArtist] = useState<SeedArtistProps>()
   const [seedGenreOptions, setSeedGenreOptions] = useState(['acoustic'])
   const [seedGenre, setSeedGenre] = useState('')
   const [playlistName, setPlaylistName] = useState('New Playlist')
@@ -76,14 +78,14 @@ export default function Home(): JSX.Element {
     } else {
       try {
         const data = await spotifyApi.searchArtists(artistSearchQuery)
-        if (data.body.artists.total === 0) {
+        if (data!.body!.artists!.total === 0) {
           console.log('No results found')
         } else {
           // console.log(data.body.artists.items[0].name)
           // console.log('Genres: ' + data.body.artists.items[0].genres)
           setSeedArtist({
-            name: data.body.artists.items[0].name,
-            uri: data.body.artists.items[0].id,
+            name: data!.body!.artists!.items[0]!.name,
+            uri: data!.body!.artists!.items[0]!.id,
           })
         }
       } catch (err) {
@@ -96,7 +98,7 @@ export default function Home(): JSX.Element {
     try {
       const data = await spotifyApi.getRecommendations({
         seed_genres: [seedGenre],
-        seed_artists: [seedArtist.uri],
+        seed_artists: [seedArtist!.uri],
         limit: numberofTracks,
       })
 
@@ -130,7 +132,7 @@ export default function Home(): JSX.Element {
 
   const addTracksToPlaylist = async (): Promise<void> => {
     try {
-      await spotifyApi.addTracksToPlaylist(playlistId, trackUris.uris)
+      await spotifyApi.addTracksToPlaylist(playlistId, trackUris!.uris)
       // console.log(data)
       console.log('Added tracks to playlist')
     } catch (err) {
@@ -256,7 +258,7 @@ export default function Home(): JSX.Element {
                             <Form.Control
                               type="text"
                               className="bg-gray"
-                              placeholder={seedArtist.name}
+                              placeholder={seedArtist?.name}
                               readOnly
                             />
                           </InputGroup>
