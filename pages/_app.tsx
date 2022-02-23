@@ -1,15 +1,16 @@
-import { Provider } from 'next-auth/client'
+import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
 import Layout from '../components/Layout'
 import '../styles/main.scss'
 
-const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps): JSX.Element => {
   return (
-    <Provider session={pageProps.session}>
+    // <SessionProvider session={pageProps.session}>
+    <SessionProvider session={session} refetchInterval={5 * 60}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </SessionProvider>
   )
 }
 

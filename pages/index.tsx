@@ -1,5 +1,6 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
 import SpotifyWebApi from 'spotify-web-api-node'
@@ -10,7 +11,8 @@ import { SeedArtistProps, TrackUrisProps } from '../interfaces/index'
 const spotifyApi = new SpotifyWebApi()
 
 export default function Home(): JSX.Element {
-  const [session] = useSession()
+  const { data: session, status } = useSession()
+  const loading = status === 'loading'
   // const [loading, setLoading] = useState(false)
   const [trackUris, setTrackUris] = useState<TrackUrisProps>()
   const [numberofTracks, setNumberofTracks] = useState(10)
@@ -20,11 +22,15 @@ export default function Home(): JSX.Element {
   const [seedGenre, setSeedGenre] = useState('')
   const [playlistName, setPlaylistName] = useState('New Playlist')
 
+  const [userInfo, setUserInfo] = useState<SpotifyApi.CurrentUsersProfileResponse>()
+
   let playlistId = ''
 
   // useEffect(() => console.log(trackUris.uris), [trackUris])
   // useEffect(() => console.log(trackUris), [trackUris])
   // useEffect(() => console.log('Seed artist: ' + seedArtist.name), [seedArtist])
+  // useEffect(() => console.log(userInfo), [userInfo])
+  useEffect(() => console.log(session), [session])
 
   const genreOptions = seedGenreOptions.map((item) => {
     return (
@@ -34,22 +40,31 @@ export default function Home(): JSX.Element {
     )
   })
 
+  const setGenreSeeds = async (): Promise<void> => {
+    try {
+      const data = await spotifyApi.getAvailableGenreSeeds()
+      const genreSeeds = data.body.genres
+      setSeedGenreOptions(genreSeeds)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   useEffect(() => {
     if (session) {
-      const setAccessToken = (): void => {
-        spotifyApi.setAccessToken(String(session.accessToken))
+      const setCredentials = (): void => {
+        try {
+          spotifyApi.setCredentials({
+            accessToken: String(session.accessToken),
+            refreshToken: String(session.refreshToken),
+          })
+        } catch (err) {
+          console.log(err)
+        }
       }
-      setAccessToken()
+      setCredentials()
 
-      const setGenreSeeds = async (): Promise<void> => {
-        spotifyApi.getAvailableGenreSeeds().then((data) => {
-          const genreSeeds = data.body.genres
-          setSeedGenreOptions(genreSeeds)
-        })
-      }
       setGenreSeeds()
-
-      // console.log(session.user.name)
     }
   }, [session])
 
@@ -60,15 +75,13 @@ export default function Home(): JSX.Element {
         limit: numberofTracks,
       })
       const topTracks = data.body.items
-      console.log('Got top tracks')
-      console.log(topTracks)
       setTrackUris({
         uris: topTracks.map((item) => {
           return item.uri
         }),
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 
@@ -81,8 +94,6 @@ export default function Home(): JSX.Element {
         if (data!.body!.artists!.total === 0) {
           console.log('No results found')
         } else {
-          // console.log(data.body.artists.items[0].name)
-          // console.log('Genres: ' + data.body.artists.items[0].genres)
           setSeedArtist({
             name: data!.body!.artists!.items[0]!.name,
             uri: data!.body!.artists!.items[0]!.id,
@@ -101,7 +112,6 @@ export default function Home(): JSX.Element {
         seed_artists: [seedArtist!.uri],
         limit: numberofTracks,
       })
-
       const recommendations = data.body
       setTrackUris({
         uris: recommendations.tracks.map((item) => {
@@ -119,12 +129,7 @@ export default function Home(): JSX.Element {
         description: '',
         public: false,
       })
-      // console.log(data)
-      // setPlaylistId(data.body.id)
       playlistId = data.body.id
-      console.log(`Created new playlist`)
-      console.log(`Playlist Name: "${playlistName}"`)
-      console.log(`Playlist Id: ${playlistId}`)
     } catch (err) {
       console.log(err)
     }
@@ -133,8 +138,6 @@ export default function Home(): JSX.Element {
   const addTracksToPlaylist = async (): Promise<void> => {
     try {
       await spotifyApi.addTracksToPlaylist(playlistId, trackUris!.uris)
-      // console.log(data)
-      console.log('Added tracks to playlist')
     } catch (err) {
       console.log(err)
     }
@@ -163,6 +166,22 @@ export default function Home(): JSX.Element {
     )
   }
 
+  const getUserInfo = async (): Promise<void> => {
+    try {
+      const data = await spotifyApi.getMe()
+      console.log('Some information about the authenticated user', data.body)
+      setUserInfo(data.body)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    if (session) {
+      getUserInfo()
+    }
+  }, [session])
+
   return (
     <div className="vh-100">
       <Head>
@@ -173,22 +192,46 @@ export default function Home(): JSX.Element {
 
       <main>
         <Container className="main-container min-vh-100 ">
-          <Row>
-            <Col>
-              <h1 className="py-5 text-center fw-bold text-white">Spotify App</h1>
-            </Col>
+          <Row className="text-center">
+            {userInfo && (
+              <div>
+                <Row className="text-center d-flex justify-content-center mt-5">
+                  <Image
+                    src={userInfo!.images![0]!.url}
+                    alt="profile picture"
+                    height={150}
+                    width={150}
+                    className="profile-pic"
+                  />
+                </Row>
+                <Row>
+                  <h1>{userInfo!.display_name}</h1>
+                </Row>
+                <Row>
+                  <div></div>
+                </Row>
+              </div>
+            )}
           </Row>
-          <LogIn />
+          <Row>
+            <Col>{/* <h1 className="py-5 text-center fw-bold text-white">Spotify App</h1> */}</Col>
+          </Row>
+          {!session && <LogIn />}
+
           <Row>
             <Col className="text-center pt-5">
-              {!session && (
+              {/* {!session && (
                 <>
-                  <Button onClick={() => signIn()}>Sign In</Button>
+                  <Button onClick={() => signIn('spotify')}>Sign In</Button>
                 </>
-              )}
+              )} */}
               {session && (
                 <>
-                  <Button className="mb-3" onClick={() => signOut()}>
+                  <Button
+                    variant="outline-secondary"
+                    className="px-4 py-2 mb-3 logout-btn"
+                    onClick={() => signOut()}
+                  >
                     Sign Out
                   </Button>
 
@@ -199,7 +242,7 @@ export default function Home(): JSX.Element {
                   </Button> */}
                   {/* {loading && <p>Loading...</p>} */}
 
-                  <Row className="justify-content-center mb-5">
+                  {/* <Row className="justify-content-center mb-5">
                     <Col xs={12} lg={6}>
                       <Form>
                         <Form.Group className="mb-2">
@@ -212,7 +255,6 @@ export default function Home(): JSX.Element {
                           >
                             {totalNumberOfTracks}
                           </Form.Control>
-                          {/* <Input></Input> */}
                         </Form.Group>
                         <Form.Group className="mb-2">
                           <Form.Label>Playlist Name</Form.Label>
@@ -265,8 +307,8 @@ export default function Home(): JSX.Element {
                         </Form.Group>
                       </Form>
                     </Col>
-                  </Row>
-                  <Row className="justify-content-center mb-5">
+                  </Row> */}
+                  {/* <Row className="justify-content-center mb-5">
                     <Col className="d-flex justify-content-center">
                       <ButtonGroup size="lg" className="mb-3">
                         <Button
@@ -285,14 +327,14 @@ export default function Home(): JSX.Element {
                         </Button>
                       </ButtonGroup>
                     </Col>
-                  </Row>
-                  <Row>
+                  </Row> */}
+                  {/* <Row>
                     <Col className="d-flex justify-content-center mb-3">
                       <Button onClick={createPlaylistAndAddTracks} variant="success">
                         Make me a playlist
                       </Button>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </>
               )}
             </Col>
