@@ -4,63 +4,63 @@
 @use '../vendors/bootstrap' as b;
 @use "../abstracts/variables" as v;
 
-.add-button {
-  // background-color: v.$surface-color;
-  color: b.$gray-700;
+// .add-button {
+//   // background-color: v.$surface-color;
+//   color: b.$gray-700;
 
-  border: 0em;
-  border-top-left-radius: 0rem;
-  border-bottom-left-radius: 0rem;
-  //   transition: none !important;
+//   border: 0em;
+//   border-top-left-radius: 0rem;
+//   border-bottom-left-radius: 0rem;
+//   //   transition: none !important;
 
-  &:hover {
-    color: b.$gray-500;
-  }
+//   &:hover {
+//     color: b.$gray-500;
+//   }
 
-  &:focus,
-  &:active,
-  &:focus:active {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-}
+//   &:focus,
+//   &:active,
+//   &:focus:active {
+//     -webkit-box-shadow: none;
+//     box-shadow: none;
+//   }
+// }
 
-.update-button,
-.delete-button {
-  background-color: v.$surface-color !important;
+// .update-button,
+// .delete-button {
+//   background-color: v.$surface-color !important;
 
-  border: 0em;
-  &:focus,
-  &:active,
-  &:focus:active {
-    color: b.$red-700;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-}
-.update-button {
-  color: b.$yellow-700;
-  &:hover {
-    color: b.$yellow-500;
-  }
-  &:focus,
-  &:active,
-  &:focus:active {
-    color: b.$yellow-700;
-  }
-}
-.delete-button {
-  // color: b.$red-700;
-  color: v.$error-color;
-  &:hover {
-    color: b.$red-500;
-  }
-  &:focus,
-  &:active,
-  &:focus:active {
-    color: b.$red-700;
-  }
-}
+//   border: 0em;
+//   &:focus,
+//   &:active,
+//   &:focus:active {
+//     color: b.$red-700;
+//     -webkit-box-shadow: none;
+//     box-shadow: none;
+//   }
+// }
+// .update-button {
+//   color: b.$yellow-700;
+//   &:hover {
+//     color: b.$yellow-500;
+//   }
+//   &:focus,
+//   &:active,
+//   &:focus:active {
+//     color: b.$yellow-700;
+//   }
+// }
+// .delete-button {
+//   // color: b.$red-700;
+//   color: v.$error-color;
+//   &:hover {
+//     color: b.$red-500;
+//   }
+//   &:focus,
+//   &:active,
+//   &:focus:active {
+//     color: b.$red-700;
+//   }
+// }
 
 .log-in-btn {
   background-color: v.$spotify-green-color;
@@ -77,6 +77,107 @@
   &:focus:active {
     background-color: v.$spotify-green-color;
 
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.play-btn {
+  background-color: v.$spotify-green-color;
+  border: none;
+  border-radius: 2rem;
+  // font-weight: 600;
+  letter-spacing: 0.15em;
+
+  &:hover {
+    background-color: lighten(v.$spotify-green-color, 5%);
+  }
+  &:focus,
+  &:active,
+  &:focus:active {
+    background-color: v.$spotify-green-color;
+
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: rgb(232, 230, 227);
+  border: 1px solid rgb(255, 255, 255);
+  border-color: rgb(48, 52, 54);
+  border-radius: 30px;
+  &:hover,
+  &:focus,
+  &:active,
+  &:focus:active {
+    background-color: rgb(24, 26, 27);
+    border-color: rgb(48, 52, 54);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.timerange-btn {
+  background-color: v.$background-color;
+  color: v.$medium-emphasis-text-color;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+
+  &:hover,
+  &:active,
+  &:checked,
+  &:focus,
+  &:focus:active {
+    background-color: v.$background-color !important;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+input[type='radio']:checked + label {
+  &::after {
+    content: ''; /* This is necessary for the pseudo element to work. */
+    display: block; /* This will put the pseudo element on its own line. */
+    margin: 0 auto; /* This will center the border. */
+    width: 100%; /* Change this to whatever width you want. */
+    padding-top: 3px; /* This creates some space between the element and the border. */
+    border-bottom: 1px solid v.$medium-emphasis-text-color; /* This creates the border. Replace black with whatever color you want. */
+  }
+}
+
+.btn-check {
+  background-color: v.$background-color;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  &:checked,
+  &:focus,
+  &:active,
+  &:focus:active {
+    background-color: v.$background-color !important;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+
+.btn-check:checked + .btn-primary {
+  background-color: v.$background-color;
+  color: v.$high-emphasis-text-color;
+  border: none;
+  border-radius: 0;
+  // border-bottom: 1px solid rgb(48, 52, 54);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  &:checked,
+  &:focus,
+  &:active,
+  &:focus:active {
+    background-color: v.$background-color !important;
     -webkit-box-shadow: none;
     box-shadow: none;
   }

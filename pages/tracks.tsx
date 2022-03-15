@@ -1,17 +1,11 @@
-import { Button, Col, Container, Row, ButtonGroup } from 'react-bootstrap'
-import Image from 'next/image'
+import { Container, Row, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { useSession } from 'next-auth/react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { useEffect, useState, useCallback } from 'react'
-import dayjs from 'dayjs'
+
+import Track from '../components/Track'
 
 const spotifyApi = new SpotifyWebApi()
-
-const msToMinutesAndSeconds = (ms: number) => {
-  var minutes = Math.floor(ms / 60000)
-  var seconds = parseInt(((ms % 60000) / 1000).toFixed(0))
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-}
 
 const Tracks = () => {
   const { data: session, status } = useSession()
@@ -21,6 +15,7 @@ const Tracks = () => {
   const [timeRange, setTimeRange] = useState<'long_term' | 'medium_term' | 'short_term'>(
     'long_term'
   )
+  const [checked, setChecked] = useState(false)
 
   const getTopTracks = useCallback(async (): Promise<void> => {
     try {
@@ -65,68 +60,53 @@ const Tracks = () => {
       {topTracks && (
         <Container className="pt-5">
           <div className="d-flex align-items-center pb-5">
-            <h2 className="fw-bold">Top Tracks</h2>
+            <h2 className="fw-bold high-emphasis-text">Top Tracks</h2>
             <ButtonGroup aria-label="Time range buttons" className="ms-auto">
-              <Button
-                variant="outline-secondary border-0"
-                onClick={() => {
-                  setTimeRange('long_term')
-                }}
+              <ToggleButton
+                id="long-term-btn"
+                type="radio"
+                name="timerange-radio"
+                value="long_term"
+                checked={timeRange === 'long_term'}
+                onChange={(e) =>
+                  setTimeRange(e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term')
+                }
+                className="timerange-btn"
               >
                 All Time
-              </Button>
-              <Button
-                variant="outline-secondary border-0"
-                onClick={() => {
-                  setTimeRange('medium_term')
-                }}
+              </ToggleButton>
+              <ToggleButton
+                id="medium-term-btn"
+                type="radio"
+                name="timerange-radio"
+                value="medium_term"
+                checked={timeRange === 'medium_term'}
+                onChange={(e) =>
+                  setTimeRange(e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term')
+                }
+                className="timerange-btn"
               >
                 Last 6 Months
-              </Button>
-              <Button
-                variant="outline-secondary border-0"
-                onClick={() => {
-                  setTimeRange('short_term')
-                }}
+              </ToggleButton>
+              <ToggleButton
+                id="short-term-btn"
+                type="radio"
+                name="timerange-radio"
+                value="short_term"
+                checked={timeRange === 'short_term'}
+                onChange={(e) =>
+                  setTimeRange(e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term')
+                }
+                className="timerange-btn"
               >
                 This Month
-              </Button>
+              </ToggleButton>
             </ButtonGroup>
           </div>
-          <Row lg={1} className="text-center">
-            {topTracks.map((topTrack: SpotifyApi.TrackObjectFull) => {
-              return (
-                <div key={topTrack.id} className="mb-4 d-flex">
-                  <Image
-                    src={topTrack.album.images[0].url}
-                    alt="album picture"
-                    height={50}
-                    width={50}
-                  />
-                  <a
-                    href={topTrack.external_urls.spotify}
-                    className="d-flex flex-column justify-content-center text-decoration-none text-light text-start ps-3"
-                  >
-                    <div>{topTrack.name}</div>
-                    <div className="text-muted">
-                      {topTrack.artists
-                        .map((artist) => {
-                          return artist.name
-                        })
-                        .join(', ')}
-                      &nbsp;&nbsp;·&nbsp;&nbsp;
-                      {topTrack.album.name}
-                    </div>
-                  </a>
-                  <a
-                    href={topTrack.external_urls.spotify}
-                    className="d-flex justify-content-center text-decoration-none text-muted ms-auto"
-                  >
-                    {msToMinutesAndSeconds(topTrack.duration_ms)}
-                  </a>
-                </div>
-              )
-            })}
+          <Row lg={1}>
+            {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
+              <Track key={index} {...track} />
+            ))}
           </Row>
         </Container>
       )}

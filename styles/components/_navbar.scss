@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the navbar component.
+// -----------------------------------------------------------------------------
+@use '../vendors/bootstrap' as b;
+@use "../abstracts/variables" as v;
+
+.nav-icon {
+  color: v.$medium-emphasis-text-color;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: v.$medium-emphasis-text-color;
+  }
+}
+
+.navbar {
+  background-color: v.$background-color;
+}

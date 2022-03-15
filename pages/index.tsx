@@ -1,11 +1,13 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
+import { useEffect, useState, useCallback } from 'react'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import SpotifyWebApi from 'spotify-web-api-node'
 
 import LogIn from '../components/LogIn'
+import PlaylistForm from '../components/PlaylistForm'
 import { SeedArtistProps, TrackUrisProps } from '../interfaces/index'
 
 const spotifyApi = new SpotifyWebApi()
@@ -13,7 +15,6 @@ const spotifyApi = new SpotifyWebApi()
 export default function Home(): JSX.Element {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
-  // const [loading, setLoading] = useState(false)
   const [trackUris, setTrackUris] = useState<TrackUrisProps>()
   const [numberofTracks, setNumberofTracks] = useState(10)
   const [artistSearchQuery, setArtistSearchQuery] = useState('')
@@ -23,6 +24,8 @@ export default function Home(): JSX.Element {
   const [playlistName, setPlaylistName] = useState('New Playlist')
 
   const [userInfo, setUserInfo] = useState<SpotifyApi.CurrentUsersProfileResponse>()
+  const [topArtists, setTopArtists] = useState<SpotifyApi.ArtistObjectFull[]>()
+  const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>()
 
   let playlistId = ''
 
@@ -68,22 +71,22 @@ export default function Home(): JSX.Element {
     }
   }, [session])
 
-  const getTopTracks = async (): Promise<void> => {
-    try {
-      const data = await spotifyApi.getMyTopTracks({
-        time_range: 'short_term',
-        limit: numberofTracks,
-      })
-      const topTracks = data.body.items
-      setTrackUris({
-        uris: topTracks.map((item) => {
-          return item.uri
-        }),
-      })
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  // const getTopTracks = async (): Promise<void> => {
+  //   try {
+  //     const data = await spotifyApi.getMyTopTracks({
+  //       time_range: 'short_term',
+  //       limit: numberofTracks,
+  //     })
+  //     const topTracks = data.body.items
+  //     setTrackUris({
+  //       uris: topTracks.map((item) => {
+  //         return item.uri
+  //       }),
+  //     })
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   const searchArtist = async (): Promise<void> => {
     if (artistSearchQuery === '') {
@@ -182,6 +185,41 @@ export default function Home(): JSX.Element {
     }
   }, [session])
 
+  const getUserTopArtists = useCallback(async (): Promise<void> => {
+    try {
+      const data = await spotifyApi.getMyTopArtists({ time_range: 'long_term', limit: 10 })
+      let topArtists = data.body.items
+      setTopArtists(topArtists)
+      console.log(topArtists)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (session) {
+      getUserTopArtists()
+      setTopArtists((topArtists) => topArtists)
+    }
+  }, [session, getUserTopArtists])
+
+  const getTopTracks = useCallback(async (): Promise<void> => {
+    try {
+      const data = await spotifyApi.getMyTopTracks({ time_range: 'long_term', limit: 10 })
+      let topTracks = data.body.items
+      setTopTracks(topTracks)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (session) {
+      getTopTracks()
+      setTopTracks((topTracks) => topTracks)
+    }
+  }, [session, getTopTracks])
+
   return (
     <div className="vh-100">
       <Head>
@@ -204,7 +242,7 @@ export default function Home(): JSX.Element {
                     className="profile-pic"
                   />
                 </Row>
-                <Row>
+                <Row className="mt-4 high-emphasis-text">
                   <h1>{userInfo!.display_name}</h1>
                 </Row>
                 <Row>
@@ -213,9 +251,7 @@ export default function Home(): JSX.Element {
               </div>
             )}
           </Row>
-          <Row>
-            <Col>{/* <h1 className="py-5 text-center fw-bold text-white">Spotify App</h1> */}</Col>
-          </Row>
+
           {!session && <LogIn />}
 
           <Row>
@@ -225,119 +261,72 @@ export default function Home(): JSX.Element {
                   <Button onClick={() => signIn('spotify')}>Sign In</Button>
                 </>
               )} */}
+              {/* <PlaylistForm /> */}
               {session && (
-                <>
-                  <Button
-                    variant="outline-secondary"
-                    className="px-4 py-2 mb-3 logout-btn"
-                    onClick={() => signOut()}
-                  >
+                <div className="mb-5">
+                  <Button className="px-4 py-2 mb-3 logout-btn" onClick={() => signOut()}>
                     Sign Out
                   </Button>
-
-                  {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
-
-                  {/* <Button onClick={() => setLoading(!loading)} disabled={loading}>
-                    Get My Spotify Data
-                  </Button> */}
-                  {/* {loading && <p>Loading...</p>} */}
-
-                  {/* <Row className="justify-content-center mb-5">
-                    <Col xs={12} lg={6}>
-                      <Form>
-                        <Form.Group className="mb-2">
-                          <Form.Label>Number of tracks</Form.Label>
-                          <Form.Control
-                            as="select"
-                            defaultValue={numberofTracks}
-                            className="bg-gray"
-                            onChange={(e) => setNumberofTracks(parseInt(e.target.value))}
-                          >
-                            {totalNumberOfTracks}
-                          </Form.Control>
-                        </Form.Group>
-                        <Form.Group className="mb-2">
-                          <Form.Label>Playlist Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder=""
-                            className="bg-gray"
-                            onChange={(e) => {
-                              setPlaylistName(e.target.value)
-                            }}
-                          ></Form.Control>
-                        </Form.Group>
-                        <Form.Group className="mb-2">
-                          <Form.Label>Genre</Form.Label>
-                          <Form.Control
-                            as="select"
-                            className="bg-gray"
-                            onChange={(e) => setSeedGenre(e.target.value)}
-                          >
-                            <option key="" value="">
-                              Select a genre
-                            </option>
-                            {genreOptions}
-                          </Form.Control>
-                        </Form.Group>
-                        <Form.Group className="mb-2">
-                          <Form.Label>Artist</Form.Label>
-                          <InputGroup>
-                            <Form.Control
-                              type="text"
-                              placeholder=""
-                              className="bg-gray"
-                              // onChange={(e) => setArtistSearchQuery(e.target.value)}
-                              onChange={(e) => {
-                                setTimeout(() => setArtistSearchQuery(e.target.value), 1)
-                              }}
-                              onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                  searchArtist()
-                                }
-                              }}
-                            />
-                            <Form.Control
-                              type="text"
-                              className="bg-gray"
-                              placeholder={seedArtist?.name}
-                              readOnly
-                            />
-                          </InputGroup>
-                        </Form.Group>
-                      </Form>
-                    </Col>
-                  </Row> */}
-                  {/* <Row className="justify-content-center mb-5">
-                    <Col className="d-flex justify-content-center">
-                      <ButtonGroup size="lg" className="mb-3">
-                        <Button
-                          onClick={getTopTracks}
-                          variant="warning"
-                          className="border border-dark"
-                        >
-                          Get your top tracks
-                        </Button>
-                        <Button
-                          onClick={getRecommendations}
-                          variant="warning"
-                          className="border border-dark"
-                        >
-                          Get recommendations
-                        </Button>
-                      </ButtonGroup>
-                    </Col>
-                  </Row> */}
-                  {/* <Row>
-                    <Col className="d-flex justify-content-center mb-3">
-                      <Button onClick={createPlaylistAndAddTracks} variant="success">
-                        Make me a playlist
-                      </Button>
-                    </Col>
-                  </Row> */}
-                </>
+                </div>
               )}
             </Col>
+          </Row>
+          <Row>
+            {topArtists && (
+              <Col>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="fw-bold high-emphasis-text">Top Artists of All Time</div>
+                  <Link href="/artists" passHref>
+                    <Button className="px-4 py-2 me-4 logout-btn">See More</Button>
+                  </Link>
+                </div>
+                {topArtists.map((artist: SpotifyApi.ArtistObjectFull, index) => (
+                  <div key={index} className="d-flex align-items-center my-4">
+                    <Image
+                      src={artist.images[0].url}
+                      alt="profile picture"
+                      height={50}
+                      width={50}
+                      className="artist-profile-pic"
+                    />
+                    <div className="ms-3 high-emphasis-text">{artist.name}</div>
+                  </div>
+                  // <Artist key={index} {...artist} />
+                ))}
+              </Col>
+            )}
+            {topTracks && (
+              <Col>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="fw-bold high-emphasis-text">Top Tracks of All Time</div>
+                  <Link href="/tracks" passHref>
+                    <Button className="px-4 py-2 me-4 logout-btn">See More</Button>
+                  </Link>
+                </div>
+                {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
+                  <div key={index} className="d-flex align-items-center my-4">
+                    <Image
+                      src={track.album.images[0].url}
+                      alt="album picture"
+                      height={50}
+                      width={50}
+                    />
+                    <div className="ms-3">
+                      <div className="high-emphasis-text">{track.name}</div>
+                      <div className="medium-emphasis-text">
+                        {track.artists
+                          .map((artist: SpotifyApi.ArtistObjectSimplified) => {
+                            return artist.name
+                          })
+                          .join(', ')}
+                        &nbsp;&nbsp;·&nbsp;&nbsp;
+                        {track.album.name}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </Col>
+            )}
           </Row>
         </Container>
       </main>

@@ -1,8 +1,9 @@
-import { Button, Col, Container, Row, ButtonGroup } from 'react-bootstrap'
-import Image from 'next/image'
+import { Container, Row, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { useSession } from 'next-auth/react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { useEffect, useState, useCallback } from 'react'
+
+import Artist from '../components/Artist'
 
 const spotifyApi = new SpotifyWebApi()
 
@@ -56,54 +57,59 @@ const Artists = () => {
         <div>
           <Container className="pt-5">
             <div className="d-flex align-items-center pb-5">
-              <h2 className="fw-bold">Top Artists</h2>
+              <h2 className="fw-bold high-emphasis-text">Top Artists</h2>
               <ButtonGroup aria-label="Time range buttons" className="ms-auto">
-                <Button
-                  variant="outline-secondary border-0"
-                  onClick={() => {
-                    setTimeRange('long_term')
-                  }}
+                <ToggleButton
+                  id="long-term-btn"
+                  type="radio"
+                  name="timerange-radio"
+                  value="long_term"
+                  checked={timeRange === 'long_term'}
+                  onChange={(e) =>
+                    setTimeRange(
+                      e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term'
+                    )
+                  }
+                  className="timerange-btn"
                 >
                   All Time
-                </Button>
-                <Button
-                  variant="outline-secondary border-0"
-                  onClick={() => {
-                    setTimeRange('medium_term')
-                  }}
+                </ToggleButton>
+                <ToggleButton
+                  id="medium-term-btn"
+                  type="radio"
+                  name="timerange-radio"
+                  value="medium_term"
+                  checked={timeRange === 'medium_term'}
+                  onChange={(e) =>
+                    setTimeRange(
+                      e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term'
+                    )
+                  }
+                  className="timerange-btn"
                 >
                   Last 6 Months
-                </Button>
-                <Button
-                  variant="outline-secondary border-0"
-                  onClick={() => {
-                    setTimeRange('short_term')
-                  }}
+                </ToggleButton>
+                <ToggleButton
+                  id="short-term-btn"
+                  type="radio"
+                  name="timerange-radio"
+                  value="short_term"
+                  checked={timeRange === 'short_term'}
+                  onChange={(e) =>
+                    setTimeRange(
+                      e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term'
+                    )
+                  }
+                  className="timerange-btn"
                 >
                   This Month
-                </Button>
+                </ToggleButton>
               </ButtonGroup>
             </div>
             <Row lg={5} className="text-center">
-              {topArtists.map((topArtist: SpotifyApi.ArtistObjectFull) => {
-                return (
-                  <div key={topArtist.id} className="mb-3">
-                    <Image
-                      src={topArtist.images[0].url}
-                      alt="profile picture"
-                      height={200}
-                      width={200}
-                      className="artist-profile-pic"
-                    />
-                    <a
-                      href={topArtist.external_urls.spotify}
-                      className="d-flex justify-content-center pt-3 text-decoration-none text-light"
-                    >
-                      {topArtist.name}
-                    </a>
-                  </div>
-                )
-              })}
+              {topArtists.map((artist: SpotifyApi.ArtistObjectFull, index) => (
+                <Artist key={index} {...artist} />
+              ))}
             </Row>
           </Container>
         </div>
