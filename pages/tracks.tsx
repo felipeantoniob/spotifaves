@@ -21,8 +21,8 @@ const Tracks = () => {
     try {
       const data = await spotifyApi.getMyTopTracks({ time_range: timeRange, limit: 50 })
       let topTracks = data.body.items
-      console.log('Top Tracks:')
-      console.log(topTracks)
+      // console.log('Top Tracks:')
+      // console.log(topTracks)
       setTopTracks(topTracks)
     } catch (err) {
       console.error(err)

@@ -24,7 +24,7 @@ const Recent = () => {
       // console.log(recentTracks)
 
       let recentTrackArray = recentTracks.map((item) => item.track)
-      console.log(recentTrackArray)
+      // console.log(recentTrackArray)
 
       setRecentTracks(recentTrackArray)
     } catch (err) {

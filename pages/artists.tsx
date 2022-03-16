@@ -20,8 +20,8 @@ const Artists = () => {
     try {
       const data = await spotifyApi.getMyTopArtists({ time_range: timeRange, limit: 50 })
       let topArtists = data.body.items
-      console.log('Top Artists:')
-      console.log(topArtists)
+      // console.log('Top Artists:')
+      // console.log(topArtists)
       setTopArtists(topArtists)
     } catch (err) {
       console.error(err)

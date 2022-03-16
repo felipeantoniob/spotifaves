@@ -14,7 +14,7 @@ const Playlists = () => {
   const getPlaylists = async (): Promise<void> => {
     try {
       const data = await spotifyApi.getUserPlaylists()
-      console.log('Retrieved playlists', data.body.items)
+      // console.log('Retrieved playlists', data.body.items)
       let playlists = data.body.items
       setPlaylists(playlists)
     } catch (err) {

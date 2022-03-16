@@ -1,6 +1,6 @@
 import NextAuth, { Account, Profile, Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
-import { getToken } from 'next-auth/jwt'
+// import { getToken } from 'next-auth/jwt'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
 const scopes = [
@@ -25,12 +25,63 @@ const scopes = [
   // "user-follow-modify",
 ]
 
+const SPOTIFY_AUTHORIZATION_URL = `https://accounts.spotify.com/authorize?scope=${scopes.join(
+  '%20'
+)}`
+
+/**
+ * Takes a token, and returns a new token with updated
+ * `accessToken` and `accessTokenExpires`. If an error occurs,
+ * returns the old token and an error property
+ */
+async function refreshAccessToken(token: JWT) {
+  try {
+    const url =
+      'https://accounts.spotify.com/api/token?' +
+      new URLSearchParams({
+        client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!,
+        client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET!,
+        grant_type: 'refresh_token',
+        refresh_token: token.refreshToken as string,
+      })
+
+    console.log(url)
+
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      method: 'POST',
+    })
+
+    const refreshedTokens = await response.json()
+
+    if (!response.ok) {
+      throw refreshedTokens
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    }
+  } catch (error) {
+    console.log(error)
+
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    }
+  }
+}
+
 export default NextAuth({
   providers: [
     SpotifyProvider({
       clientId: String(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID),
       clientSecret: String(process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET),
-      authorization: `https://accounts.spotify.com/authorize?scope=${scopes.join('%20')}`,
+      authorization: SPOTIFY_AUTHORIZATION_URL,
     }),
   ],
   // The secret should be set to a reasonably long random string.
@@ -44,14 +95,14 @@ export default NextAuth({
     // Note: `strategy` should be set to 'jwt' if no database is used.
     strategy: 'jwt',
     // Seconds - How long until an idle session expires and is no longer valid.
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 60 * 60 * 24 * 30, // 30 days
   },
   jwt: {
     // A secret to use for key generation (you should set this explicitly)
     secret: process.env.NEXTAUTH_SECRET,
     // The maximum age of the NextAuth.js issued JWT in seconds.
     // Defaults to `session.maxAge`.
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 24 * 30, // 30 days
   },
   callbacks: {
     async jwt(params: {
@@ -61,20 +112,39 @@ export default NextAuth({
       profile?: Profile
       isNewUser?: boolean
     }) {
-      // Persist the OAuth access_token to the token right after signin
-      if (params.account) {
-        params.token.accessToken = params.account?.access_token
+      // Initial sign in
+      if (params.account && params.user) {
+        // console.log('Initial sign in')
+        // console.log(params.token)
+        return {
+          accessToken: params.account.access_token,
+          accessTokenExpires: Date.now() + params.account.expires_at! * 1000,
+          refreshToken: params.account.refresh_token,
+          user: params.user,
+        }
       }
 
-      if (params.account) {
-        params.token.refreshToken = params.account?.refresh_token
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (params.token.accessTokenExpires as number)) {
+        return params.token
       }
 
-      return params.token
+      // Access token has expired, try to update it
+      return refreshAccessToken(params.token)
+
+      // // Persist the OAuth access_token to the token right after signin
+      // if (params.account) {
+      //   params.token.accessToken = params.account?.access_token
+      //   params.token.refreshToken = params.account?.refresh_token
+      // }
+      // return params.token
     },
-    async session(params: { session: Session; token: JWT }) {
+    async session(params: { session: Session; token: JWT; user: User }) {
+      params.session.user = params.token.user as User
       params.session.accessToken = params.token.accessToken
-      params.session.refreshToken = params.token.refreshToken
+      params.session.error = params.token.error
+
+      // params.session.refreshToken = params.token.refreshToken
 
       return params.session
     },
