@@ -1,15 +1,12 @@
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-
-import SpotifyWebApi from 'spotify-web-api-node'
 
 import TrackModal from './TrackModal'
 import { msToMinutesAndSeconds } from '../utils'
+import { getAudioFeaturesForTrack } from '../spotify'
 
-const spotifyApi = new SpotifyWebApi()
-
-const Track = ({ ...track }) => {
+const Track = ({ ...track }): JSX.Element => {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
 
@@ -21,39 +18,11 @@ const Track = ({ ...track }) => {
   const handleShow = (): void => setShow(true)
 
   const handleClick = async () => {
-    // console.log('Track props:')
-    // console.log({ ...track })
     setSelectedTrack({ ...(track as SpotifyApi.TrackObjectFull) })
-    await getAudioFeaturesForTrack()
+    const audioFeatures = await getAudioFeaturesForTrack(track.id)
+    setAudioFeatures(audioFeatures)
     handleShow()
   }
-
-  const getAudioFeaturesForTrack = async (): Promise<void> => {
-    try {
-      const data = await spotifyApi.getAudioFeaturesForTrack(track.id)
-      let audioFeatures = data.body
-      console.log(audioFeatures)
-      setAudioFeatures(audioFeatures)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    if (session) {
-      const setCredentials = (): void => {
-        try {
-          spotifyApi.setCredentials({
-            accessToken: String(session.accessToken),
-            refreshToken: String(session.refreshToken),
-          })
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      setCredentials()
-    }
-  }, [session])
 
   return (
     <div>

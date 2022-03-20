@@ -1,0 +1,51 @@
+import { ButtonGroup, ToggleButton } from 'react-bootstrap'
+
+interface TimeRangeRadioProps {
+  timeRange: 'long_term' | 'medium_term' | 'short_term'
+  setTimeRange: React.Dispatch<React.SetStateAction<'long_term' | 'medium_term' | 'short_term'>>
+}
+
+const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.Element => {
+  const changeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setTimeRange(e.currentTarget.value as 'long_term' | 'medium_term' | 'short_term')
+  }
+  return (
+    <ButtonGroup aria-label="Time range buttons" className="ms-auto">
+      <ToggleButton
+        id="long-term-btn"
+        type="radio"
+        name="timerange-radio"
+        value="long_term"
+        checked={timeRange === 'long_term'}
+        onChange={changeHandler}
+        className="timerange-btn"
+      >
+        All Time
+      </ToggleButton>
+      <ToggleButton
+        id="medium-term-btn"
+        type="radio"
+        name="timerange-radio"
+        value="medium_term"
+        checked={timeRange === 'medium_term'}
+        onChange={changeHandler}
+        className="timerange-btn"
+      >
+        Last 6 Months
+      </ToggleButton>
+      <ToggleButton
+        id="short-term-btn"
+        type="radio"
+        name="timerange-radio"
+        value="short_term"
+        checked={timeRange === 'short_term'}
+        onChange={changeHandler}
+        className="timerange-btn"
+      >
+        This Month
+      </ToggleButton>
+    </ButtonGroup>
+  )
+}
+
+export default TimeRangeRadio

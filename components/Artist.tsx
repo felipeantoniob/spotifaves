@@ -1,13 +1,12 @@
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import SpotifyWebApi from 'spotify-web-api-node'
+import { useEffect, useState } from 'react'
 
 import ArtistModal from './ArtistModal'
+import { getArtistTopTracks, getArtistRelatedArtists } from '../spotify'
 
-const spotifyApi = new SpotifyWebApi()
 
-const Artist = ({ ...artist }) => {
+const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
 
@@ -23,58 +22,47 @@ const Artist = ({ ...artist }) => {
     // console.log('Artist props:')
     // console.log({ ...artist })
     setSelectedArtist({ ...(artist as SpotifyApi.ArtistObjectFull) })
-    await getArtistTopTracks()
-    await getArtistRelatedArtists()
+    const artistTopTracks = await getArtistTopTracks(artist, 'US')
+    setTopTracks(artistTopTracks)
+    const artistRelatedArtists = await getArtistRelatedArtists(artist.id)
+    setRelatedArtists(artistRelatedArtists)
     handleShow()
   }
 
-  const getArtistTopTracks = async (): Promise<void> => {
-    const country = 'US'
+  // const getArtistTopTracks = async (): Promise<void> => {
+  //   const country = 'US'
 
-    try {
-      const data = await spotifyApi.getArtistTopTracks(artist.id, country)
-      console.log('Artist Top Tracks:')
-      console.log(data.body.tracks)
-      let topTracksArray = data.body.tracks
-      setTopTracks(topTracksArray)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  //   try {
+  //     const data = await spotifyApi.getArtistTopTracks(artist.id, country)
+  //     // console.log('Artist Top Tracks:')
+  //     // console.log(data.body.tracks)
+  //     let topTracksArray = data.body.tracks
+  //     setTopTracks(topTracksArray)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
-  const getArtistRelatedArtists = async (): Promise<void> => {
-    try {
-      const data = await spotifyApi.getArtistRelatedArtists(artist.id)
-      console.log('Artist Related Artists:')
-      console.log(data.body.artists)
-      let relatedArtistsArray = data.body.artists
-      setRelatedArtists(relatedArtistsArray)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // const getArtistRelatedArtists = async (): Promise<void> => {
+  //   try {
+  //     const data = await spotifyApi.getArtistRelatedArtists(artist.id)
+  //     // console.log('Artist Related Artists:')
+  //     // console.log(data.body.artists)
+  //     let relatedArtistsArray = data.body.artists
+  //     setRelatedArtists(relatedArtistsArray)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
-  useEffect(() => {
-    if (session) {
-      const setCredentials = (): void => {
-        try {
-          spotifyApi.setCredentials({
-            accessToken: String(session.accessToken),
-            refreshToken: String(session.refreshToken),
-          })
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      setCredentials()
-    }
-  }, [session])
+
 
   return (
     <div className="mb-5">
       <Image
         src={artist.images[0].url}
         alt="profile picture"
+        draggable="false"
         height={200}
         width={200}
         className="artist-profile-pic"

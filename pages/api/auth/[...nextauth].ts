@@ -95,14 +95,20 @@ export default NextAuth({
     // Note: `strategy` should be set to 'jwt' if no database is used.
     strategy: 'jwt',
     // Seconds - How long until an idle session expires and is no longer valid.
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    // maxAge: 60 * 60 * 24 * 30, // 30 days
+    // maxAge: 60 * 60, // 1 hour
+    maxAge: 60 * 30, // 30 minutes
+    // maxAge: 60, // 1 minute
   },
   jwt: {
     // A secret to use for key generation (you should set this explicitly)
     secret: process.env.NEXTAUTH_SECRET,
     // The maximum age of the NextAuth.js issued JWT in seconds.
     // Defaults to `session.maxAge`.
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    // maxAge: 60 * 60 * 24 * 30, // 30 days
+    // maxAge: 60 * 60, // 1 hour
+    maxAge: 60 * 30, // 30 minutes
+    // maxAge: 60, // 1 minute
   },
   callbacks: {
     async jwt(params: {
@@ -144,7 +150,7 @@ export default NextAuth({
       params.session.accessToken = params.token.accessToken
       params.session.error = params.token.error
 
-      // params.session.refreshToken = params.token.refreshToken
+      params.session.refreshToken = params.token.refreshToken
 
       return params.session
     },

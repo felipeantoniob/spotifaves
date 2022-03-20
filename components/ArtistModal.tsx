@@ -23,9 +23,10 @@ const ArtistModal = ({
         <Image
           src={selectedArtist!.images[0].url}
           alt="profile picture"
+          draggable="false"
           height={300}
           width={300}
-          className="artist-profile-pic"
+          className="artist-modal-img"
         />
         <h1 className="display-3 fw-bold my-5 high-emphasis-text">{selectedArtist!.name}</h1>
         <Row className="justify-content-center">
@@ -56,6 +57,8 @@ const ArtistModal = ({
                   <div key={index}>
                     <a
                       href={track.external_urls.spotify}
+                      target="_blank"
+                      rel="noreferrer"
                       className="text-capitalize text-blue text-decoration-none fw-bold"
                     >
                       {track.name}
@@ -77,6 +80,8 @@ const ArtistModal = ({
                     <div key={index}>
                       <a
                         href={artist.external_urls.spotify}
+                        target="_blank"
+                        rel="noreferrer"
                         className="text-capitalize text-blue text-decoration-none fw-bold"
                       >
                         {artist.name}

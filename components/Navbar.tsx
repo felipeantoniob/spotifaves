@@ -7,9 +7,10 @@ import {
   BsMusicNoteList,
   BsSpotify,
 } from 'react-icons/bs'
+import { MdHistory, MdOutlineQueueMusic } from 'react-icons/md'
 import { GiMicrophone } from 'react-icons/gi'
 
-const Header = () => {
+const Header = (): JSX.Element => {
   return (
     <header>
       <Navbar expand="lg" className="py-3">
@@ -21,50 +22,49 @@ const Header = () => {
               </a>
             </Link>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav" className="nav-link-container">
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav" className="nav-link-container">
             <Nav className="ms-auto align-items-center fs-5">
-              <Nav.Link className="px-3 g-5">
-                <Link href="/" passHref>
+              <Link href="/" passHref>
+                <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
                     <BsPersonFill size="1.5rem" />
                     Profile
                   </a>
-                </Link>
-              </Nav.Link>
-              <Nav.Link className="px-3 g-5">
-                <Link href="/artists" passHref>
+                </Nav.Link>
+              </Link>
+              <Link href="/artists" passHref>
+                <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
                     <GiMicrophone size="1.5rem" />
                     Top Artists
                   </a>
-                </Link>
-              </Nav.Link>
-              <Nav.Link className="px-3 g-5">
-                <Link href="/tracks" passHref>
+                </Nav.Link>
+              </Link>
+              <Link href="/tracks" passHref>
+                <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
                     <BsMusicNoteBeamed size="1.5rem" />
                     Top Tracks
                   </a>
-                </Link>
-              </Nav.Link>
-
-              <Nav.Link className="px-3 g-5">
-                <Link href="/recent" passHref>
+                </Nav.Link>
+              </Link>
+              <Link href="/recent" passHref>
+                <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <BsFillClockFill size="1.5rem" />
+                    <MdHistory size="1.5rem" />
                     Recent
                   </a>
-                </Link>
-              </Nav.Link>
-              <Nav.Link className="px-3 g-5">
-                <Link href="/playlists" passHref>
+                </Nav.Link>
+              </Link>
+              <Link href="/playlists" passHref>
+                <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <BsMusicNoteList size="1.5rem" />
+                    <MdOutlineQueueMusic size="1.5rem" />
                     Playlists
                   </a>
-                </Link>
-              </Nav.Link>
+                </Nav.Link>
+              </Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

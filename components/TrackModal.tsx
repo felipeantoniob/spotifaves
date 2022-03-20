@@ -51,9 +51,11 @@ const TrackModal = ({
               </h6>
               {/* {audioFeatures && <h5>{audioFeatures!.tempo.toFixed(2)} BPM</h5>} */}
               {/* {audioFeatures && <h5>{audioFeatures!.loudness.toFixed(2)} dB</h5>} */}
-              <Button className="play-btn py-2 px-4">
+              <Button className="btn-play py-2 px-4">
                 <a
                   href={selectedTrack!.external_urls.spotify}
+                  target="_blank"
+                  rel="noreferrer"
                   className="text-decoration-none text-white"
                 >
                   PLAY ON SPOTIFY

@@ -41,8 +41,39 @@ body {
   }
 }
 
+.artist-modal-img {
+  border-radius: 100%;
+  object-fit: cover;
+  // &:hover {
+  //   filter: brightness(50%);
+  //   transition: all 0.25s cubic-bezier(0.3, 0, 0.4, 1) 0s;
+  // }
+}
+
+.playlist-pic {
+  cursor: pointer;
+  object-fit: cover;
+  &:hover {
+    filter: brightness(50%);
+    transition: all 0.25s cubic-bezier(0.3, 0, 0.4, 1) 0s;
+  }
+}
+
+.playlist-mosaic-pic {
+  // cursor: pointer;
+  object-fit: cover;
+  // &:hover {
+  //   filter: brightness(50%);
+  //   transition: all 0.25s cubic-bezier(0.3, 0, 0.4, 1) 0s;
+  // }
+}
+
 .spotify-icon {
   color: rgb(81, 228, 133) !important;
+}
+
+.green-text {
+  color: rgb(29, 185, 84);
 }
 
 .nav-link-container {
@@ -67,4 +98,30 @@ body {
 
 .text-blue {
   color: rgb(80, 155, 245);
+}
+
+.subtitle-text {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.playlist-footer {
+  background-color: v.$background-color;
+  -webkit-transition: height 0.3s ease;
+  transition: height 0.3s ease;
+  height: 0;
+}
+
+.playlist-footer-visible {
+  background-color: v.$background-color;
+  -webkit-transition: height 0.3s ease;
+  transition: height 0.3s ease;
+  height: auto;
+}
+
+.user-link {
+  transition: all 0.25s cubic-bezier(0.3, 0, 0.4, 1) 0s;
+  &:hover {
+    color: rgb(30, 215, 96);
+  }
 }

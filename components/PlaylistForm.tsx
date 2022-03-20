@@ -4,11 +4,18 @@ import { Button, Col, Container, Row, Form, InputGroup, ButtonGroup } from 'reac
 import SpotifyWebApi from 'spotify-web-api-node'
 import { useSession } from 'next-auth/react'
 
-import { SeedArtistProps, TrackUrisProps } from '../interfaces/index'
+type SeedArtistProps = {
+  name: string
+  uri: string
+}
+
+type TrackUrisProps = {
+  uris: string[]
+}
 
 const spotifyApi = new SpotifyWebApi()
 
-const PlaylistForm = () => {
+const PlaylistForm = (): JSX.Element => {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
   const [trackUris, setTrackUris] = useState<TrackUrisProps>()
