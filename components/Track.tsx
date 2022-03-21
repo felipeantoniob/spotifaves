@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import TrackModal from './TrackModal'
 import { msToMinutesAndSeconds } from '../utils'
 import { getAudioFeaturesForTrack } from '../spotify'
+
+import { MdInfo } from 'react-icons/md'
 
 const Track = ({ ...track }): JSX.Element => {
   const { data: session, status } = useSession()
@@ -25,31 +28,48 @@ const Track = ({ ...track }): JSX.Element => {
   }
 
   return (
-    <div>
-      <div key={track.id} className="mb-4 d-flex cursor-pointer" onClick={handleClick}>
-        <Image
-          src={track.album.images[0].url}
-          alt="album picture"
-          height={50}
-          width={50}
-          onClick={handleClick}
-        />
-        <div className="d-flex flex-column justify-content-center text-decoration-none text-light text-start ps-3">
-          <div className="high-emphasis-text">{track.name}</div>
-          <div className="medium-emphasis-text">
-            {track.artists
-              .map((artist: SpotifyApi.ArtistObjectSimplified) => {
-                return artist.name
-              })
-              .join(', ')}
-            &nbsp;&nbsp;·&nbsp;&nbsp;
-            {track.album.name}
+    <>
+      <Row
+        key={track.id}
+        className="mb-3 cursor-pointer justify-content-between hover-img"
+        onClick={handleClick}
+      >
+        <Col xs="auto" className="my-auto position-relative left-0 top-0">
+          <Image
+            src={track.album.images[0].url}
+            alt="album picture"
+            height={50}
+            width={50}
+            layout="intrinsic"
+            onClick={handleClick}
+            // className="position-absolute left-0 top-0"
+          />
+          <div className="position-absolute top-50 start-50 translate-middle text-light info-icon">
+            <MdInfo size="2rem" />
           </div>
-        </div>
-        <div className="d-flex justify-content-center text-decoration-none text-muted ms-auto">
-          {msToMinutesAndSeconds(track.duration_ms)}
-        </div>
-      </div>
+        </Col>
+        <Col>
+          <div className="d-grid gap-2" style={{ gridTemplateColumns: '1fr max-content' }}>
+            <div className="overflow-hidden">
+              <span className="d-block overflow-hidden text-truncate text-nowrap high-emphasis-text">
+                <span className="underline-hover-text">{track.name}</span>
+              </span>
+              <span className="d-block overflow-hidden text-truncate text-nowrap medium-emphasis-text fw-light">
+                {track.artists
+                  .map((artist: SpotifyApi.ArtistObjectSimplified) => {
+                    return artist.name
+                  })
+                  .join(', ')}
+                &nbsp;&nbsp;·&nbsp;&nbsp;
+                {track.album.name}
+              </span>
+            </div>
+            <span className="d-block text-decoration-none text-muted fw-light">
+              {msToMinutesAndSeconds(track.duration_ms)}
+            </span>
+          </div>
+        </Col>
+      </Row>
       {selectedTrack && (
         <TrackModal
           audioFeatures={audioFeatures}
@@ -58,7 +78,7 @@ const Track = ({ ...track }): JSX.Element => {
           show={show}
         />
       )}
-    </div>
+    </>
   )
 }
 

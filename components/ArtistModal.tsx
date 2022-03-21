@@ -1,13 +1,6 @@
 import Image from 'next/image'
 import { Col, Modal, Row } from 'react-bootstrap'
-
-interface ArtistModalProps {
-  show: boolean
-  handleClose: () => void
-  selectedArtist: SpotifyApi.ArtistObjectFull | undefined
-  relatedArtists: SpotifyApi.ArtistObjectFull[] | undefined
-  topTracks: SpotifyApi.TrackObjectFull[] | undefined
-}
+import { ArtistModalProps } from '../types/index'
 
 const ArtistModal = ({
   handleClose,
@@ -26,7 +19,7 @@ const ArtistModal = ({
           draggable="false"
           height={300}
           width={300}
-          className="artist-modal-img"
+          className="img-artist-modal"
         />
         <h1 className="display-3 fw-bold my-5 high-emphasis-text">{selectedArtist!.name}</h1>
         <Row className="justify-content-center">

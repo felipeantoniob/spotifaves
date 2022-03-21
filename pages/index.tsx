@@ -6,6 +6,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 
 import PlaylistForm from '../components/PlaylistForm'
+import Sidebar from '../components/Sidebar'
 
 import {
   getUserPlaylists,
@@ -71,10 +72,10 @@ export default function Home(): JSX.Element {
   }, [])
 
   return (
-    <div className="vh-100">
+    <div>
+      {/* <Sidebar /> */}
       <main>
         <Container className="main-container min-vh-100 ">
-          {/* <button onClick={initializeSpotifyApi}>test</button> */}
           <Row className="text-center">
             {userInfo && (
               <div>
@@ -84,7 +85,7 @@ export default function Home(): JSX.Element {
                     alt="profile picture"
                     height={150}
                     width={150}
-                    className="profile-pic"
+                    className="img-user-profile"
                   />
                 </Row>
                 <Row className="mt-4">
@@ -100,15 +101,15 @@ export default function Home(): JSX.Element {
                 {!!followedArtists && !!userPlaylists && (
                   <Row className=" justify-content-center medium-emphasis-text">
                     <Col xs="auto">
-                      <div className="green-text fw-bold">{userInfo!.followers!.total}</div>
+                      <div className="text-green fw-bold">{userInfo!.followers!.total}</div>
                       <p className="fw-light">FOLLOWERS</p>
                     </Col>
                     <Col xs="auto">
-                      <div className="green-text fw-bold">{followedArtists.artists.total}</div>
+                      <div className="text-green fw-bold">{followedArtists.artists.total}</div>
                       <p className="fw-light">FOLLOWING</p>
                     </Col>
                     <Col xs="auto">
-                      <div className="green-text fw-bold">{userPlaylists.total}</div>
+                      <div className="text-green fw-bold">{userPlaylists.total}</div>
                       <p className="fw-light">PLAYLISTS</p>
                     </Col>
                   </Row>
@@ -134,15 +135,23 @@ export default function Home(): JSX.Element {
               </Col>
             </Row>
             <Row className="pb-5">
-              <Col>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="fw-bold high-emphasis-text">Top Artists of All Time</div>
-                  <Link href="/artists" passHref>
-                    <Button className="px-4 py-2 me-4 btn-see-more">See More</Button>
-                  </Link>
-                </div>
+              <Col xs={12} lg={6}>
+                <Row className="d-flex justify-content-between align-items-center">
+                  <Col
+                    xs={12}
+                    md="auto"
+                    className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
+                  >
+                    Top Artists of All Time
+                  </Col>
+                  <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
+                    <Link href="/artists" passHref>
+                      <Button className="px-4 py-2 btn-see-more">See More</Button>
+                    </Link>
+                  </Col>
+                </Row>
                 {topArtists && (
-                  <div>
+                  <div className="mb-5">
                     {topArtists.map((artist: SpotifyApi.ArtistObjectFull, index) => (
                       <div key={index} className="d-flex align-items-center my-4">
                         <Image
@@ -150,7 +159,7 @@ export default function Home(): JSX.Element {
                           alt="profile picture"
                           height={50}
                           width={50}
-                          className="artist-profile-pic"
+                          className="img-artist-profile"
                         />
                         <div className="ms-3 high-emphasis-text">{artist.name}</div>
                       </div>
@@ -159,16 +168,24 @@ export default function Home(): JSX.Element {
                   </div>
                 )}
               </Col>
+              <Col xs={12} lg={6}>
+                <Row className="d-flex justify-content-between align-items-center">
+                  <Col
+                    xs={12}
+                    md="auto"
+                    className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
+                  >
+                    Top Tracks of All Time
+                  </Col>
+                  <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
+                    <Link href="/tracks" passHref>
+                      <Button className="px-4 py-2 btn-see-more">See More</Button>
+                    </Link>
+                  </Col>
+                </Row>
 
-              <Col>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="fw-bold high-emphasis-text">Top Tracks of All Time</div>
-                  <Link href="/tracks" passHref>
-                    <Button className="px-4 py-2 me-4 btn-see-more">See More</Button>
-                  </Link>
-                </div>
                 {topTracks && (
-                  <div>
+                  <div className="mb-5">
                     {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
                       <div key={index} className="d-flex align-items-center my-4">
                         <Image

@@ -1,10 +1,11 @@
-import Image from 'next/image'
-import { Button, Container, Row, Modal } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Track from '../components/Track'
+import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
+import CreatedPlaylistModal from '../components/CreatedPlaylistModal'
 import {
   addTracksToPlaylist,
   createNewPlaylist,
@@ -29,13 +30,17 @@ const Recent = (): JSX.Element => {
   const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        setShowFooter(true)
-      } else {
-        setShowFooter(false)
-      }
-    })
+    const showFooterOnScroll = () => {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          setShowFooter(true)
+        } else {
+          setShowFooter(false)
+        }
+      })
+    }
+    showFooterOnScroll()
+ 
   }, [])
 
   const handleClose = (): void => setShow(false)
@@ -69,7 +74,7 @@ const Recent = (): JSX.Element => {
   }
 
   return (
-    <>
+    <main>
       {recentTracks && (
         <>
           <Container className="pt-5">
@@ -90,62 +95,25 @@ const Recent = (): JSX.Element => {
                   showFooter ? 'playlist-footer-visible' : 'playlist-footer'
                 } playlist-footer fixed-bottom  border-top border-dark`}
               >
-                <Container>
-                  <Row>
-                    <div className="d-flex align-items-center py-3 medium-emphasis-text">
-                      <div>
-                        <div className="fw-bold mb-2">Create Recently Played playlist</div>
-                        <p className="fw-light">
-                          This creates a playlist of your 50 most recently played tracks.
-                        </p>
-                      </div>
-                      <Button
-                        className="ms-auto btn-create-playlist px-4 py-2 fw-bold"
-                        onClick={handleClick}
-                      >
-                        Create Playlist
-                      </Button>
-                    </div>
-                  </Row>
-                </Container>
+                <CreatePlaylistFooter
+                  title="Create Recently Played playlist"
+                  description="This creates a playlist of your 50 most recently played tracks."
+                  handleClick={handleClick}
+                />
               </Container>
             )}
 
             {playlistDetails && (
-              <Modal show={show} onHide={handleClose} centered className="high-emphasis-text">
-                <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>
-
-                <Modal.Body className="text-center px-5">
-                  <h3 className="fw-bold">Success!</h3>
-                  <p className="fw-light">Your new Playlist is now available on Spotify.</p>
-                  <Image
-                    src={playlistDetails.images[0].url}
-                    alt="playlist cover"
-                    height={640}
-                    width={640}
-                    className="playlist-mosaic-pic mb-3"
-                  />
-                  <h5 className="fw-bold mb-4">{playlistDetails.name}</h5>
-                  <Button
-                    onClick={handleClose}
-                    className="btn-open-on-spotify fw-bold px-4 py-3 mb-3"
-                  >
-                    <a
-                      href={playlistDetails.external_urls.spotify}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-decoration-none text-white"
-                    >
-                      Open on Spotify
-                    </a>
-                  </Button>
-                </Modal.Body>
-              </Modal>
+              <CreatedPlaylistModal
+                show={show}
+                handleClose={handleClose}
+                playlistDetails={playlistDetails}
+              />
             )}
           </Container>
         </>
       )}
-    </>
+    </main>
   )
 }
 

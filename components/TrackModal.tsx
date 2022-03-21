@@ -1,12 +1,7 @@
 import Image from 'next/image'
-import { Card, Col, Modal, Row, Button } from 'react-bootstrap'
+import { Col, Modal, Row, Button } from 'react-bootstrap'
 
-interface TrackModalProps {
-  show: boolean
-  handleClose: () => void
-  selectedTrack: SpotifyApi.TrackObjectFull | undefined
-  audioFeatures: SpotifyApi.AudioFeaturesObject | undefined
-}
+import { TrackModalProps } from '../types/index'
 
 const TrackModal = ({
   //   audioAnalysis,
@@ -16,8 +11,8 @@ const TrackModal = ({
   show,
 }: TrackModalProps): JSX.Element => {
   if (audioFeatures) {
-    let tempo = audioFeatures!.tempo
-    let loudness = audioFeatures!.loudness
+    const tempo = audioFeatures!.tempo
+    const loudness = audioFeatures!.loudness
     // console.log(tempo)
     // console.log(loudness)
   }

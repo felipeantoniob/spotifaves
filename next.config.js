@@ -7,6 +7,7 @@ module.exports = {
       'blend-playlist-covers.spotifycdn.com',
       'lineup-images.scdn.co',
       'newjams-images.scdn.co',
+      'thisis-images.scdn.co',
     ],
   },
   eslint: {

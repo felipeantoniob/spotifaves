@@ -6,3 +6,9 @@
   text-decoration: line-through;
   opacity: 0.5;
 }
+
+.underline-hover-text {
+  &:hover {
+    border-bottom: 1px solid white;
+  }
+}

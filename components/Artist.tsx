@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import ArtistModal from './ArtistModal'
 import { getArtistTopTracks, getArtistRelatedArtists } from '../spotify'
-
 
 const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
   const { data: session, status } = useSession()
@@ -55,8 +54,6 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
   //   }
   // }
 
-
-
   return (
     <div className="mb-5">
       <Image
@@ -65,7 +62,7 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
         draggable="false"
         height={200}
         width={200}
-        className="artist-profile-pic"
+        className="img-artist-profile"
         onClick={handleClick}
       />
       <a

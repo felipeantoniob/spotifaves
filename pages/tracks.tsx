@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { Button, Container, Modal, Row, ButtonGroup, ToggleButton } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
-import Track from '../components/Track'
+import CreatedPlaylistModal from '../components/CreatedPlaylistModal'
+import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
 import TimeRangeRadio from '../components/TimeRangeRadio'
+import Track from '../components/Track'
 import { timeRangeDescription } from '../utils'
 import {
   getTopTracks,
@@ -13,6 +14,7 @@ import {
   createNewPlaylist,
   getPlaylistDetails,
 } from '../spotify'
+import { timeRangeType } from '../types'
 
 const Tracks = (): JSX.Element => {
   const router = useRouter()
@@ -27,19 +29,20 @@ const Tracks = (): JSX.Element => {
   const [show, setShow] = useState(false)
   const [showFooter, setShowFooter] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>()
-  const [timeRange, setTimeRange] = useState<'long_term' | 'medium_term' | 'short_term'>(
-    'long_term'
-  )
+  const [timeRange, setTimeRange] = useState<timeRangeType>('long_term')
   const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        setShowFooter(true)
-      } else {
-        setShowFooter(false)
-      }
-    })
+    const showFooterOnScroll = () => {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          setShowFooter(true)
+        } else {
+          setShowFooter(false)
+        }
+      })
+    }
+    showFooterOnScroll()
   }, [])
 
   const handleClose = (): void => setShow(false)
@@ -69,13 +72,17 @@ const Tracks = (): JSX.Element => {
   }
 
   return (
-    <>
+    <main>
       {topTracks && (
         <Container className="pt-5">
-          <div className="d-flex align-items-center pb-5">
-            <h2 className="fw-bold high-emphasis-text">Top Tracks</h2>
-            <TimeRangeRadio timeRange={timeRange} setTimeRange={setTimeRange} />
-          </div>
+          <Row className="d-flex align-items-center justify-content-between pb-5">
+            <Col xs={12} md="auto" className="text-center">
+              <h2 className="fw-bold high-emphasis-text">Top Tracks</h2>
+            </Col>
+            <Col xs={12} md="auto" className="text-center">
+              <TimeRangeRadio timeRange={timeRange} setTimeRange={setTimeRange} />
+            </Col>
+          </Row>
           <Row lg={1} className="mb-5">
             {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
               <Track key={index} {...track} />
@@ -90,59 +97,24 @@ const Tracks = (): JSX.Element => {
                 showFooter ? 'playlist-footer-visible' : 'playlist-footer'
               } playlist-footer fixed-bottom  border-top border-dark`}
             >
-              <Container>
-                <Row>
-                  <div className="d-flex align-items-center py-3 medium-emphasis-text">
-                    <div>
-                      <div className="fw-bold mb-2">Create Top Tracks playlist</div>
-                      <p className="fw-light">This creates a playlist of your top 50 tracks.</p>
-                    </div>
-                    <Button
-                      className="ms-auto btn-create-playlist px-4 py-2 fw-bold"
-                      onClick={handleClick}
-                    >
-                      Create Playlist
-                    </Button>
-                  </div>
-                </Row>
-              </Container>
+              <CreatePlaylistFooter
+                title="Create Top Tracks playlist"
+                description="This creates a playlist of your top 50 tracks."
+                handleClick={handleClick}
+              />
             </Container>
           )}
 
           {playlistDetails && (
-            <Modal show={show} onHide={handleClose} centered className="high-emphasis-text">
-              <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>
-
-              <Modal.Body className="text-center px-5">
-                <h3 className="fw-bold">Success!</h3>
-                <p className="fw-light">Your new Playlist is now available on Spotify.</p>
-                <Image
-                  src={playlistDetails.images[0].url}
-                  alt="playlist cover"
-                  height={640}
-                  width={640}
-                  className="playlist-mosaic-pic mb-3"
-                />
-                <h5 className="fw-bold mb-4">{playlistDetails.name}</h5>
-                <Button
-                  onClick={handleClose}
-                  className="btn-open-on-spotify fw-bold px-4 py-3 mb-3"
-                >
-                  <a
-                    href={playlistDetails.external_urls.spotify}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-decoration-none text-white"
-                  >
-                    Open on Spotify
-                  </a>
-                </Button>
-              </Modal.Body>
-            </Modal>
+            <CreatedPlaylistModal
+              show={show}
+              handleClose={handleClose}
+              playlistDetails={playlistDetails}
+            />
           )}
         </Container>
       )}
-    </>
+    </main>
   )
 }
 

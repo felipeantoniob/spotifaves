@@ -13,7 +13,7 @@ import { GiMicrophone } from 'react-icons/gi'
 const Header = (): JSX.Element => {
   return (
     <header>
-      <Navbar expand="lg" className="py-3">
+      <Navbar expand="lg" variant="dark" className="py-3">
         <Container fluid>
           <Navbar.Brand className="px-3">
             <Link href="/" passHref>

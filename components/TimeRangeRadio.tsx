@@ -1,9 +1,5 @@
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
-
-interface TimeRangeRadioProps {
-  timeRange: 'long_term' | 'medium_term' | 'short_term'
-  setTimeRange: React.Dispatch<React.SetStateAction<'long_term' | 'medium_term' | 'short_term'>>
-}
+import { timeRangeType, TimeRangeRadioProps } from '../types/index'
 
 const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.Element => {
   const changeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -18,7 +14,7 @@ const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.E
         value="long_term"
         checked={timeRange === 'long_term'}
         onChange={changeHandler}
-        className="timerange-btn"
+        className="btn-timerange"
       >
         All Time
       </ToggleButton>
@@ -29,7 +25,7 @@ const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.E
         value="medium_term"
         checked={timeRange === 'medium_term'}
         onChange={changeHandler}
-        className="timerange-btn"
+        className="btn-timerange"
       >
         Last 6 Months
       </ToggleButton>
@@ -40,7 +36,7 @@ const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.E
         value="short_term"
         checked={timeRange === 'short_term'}
         onChange={changeHandler}
-        className="timerange-btn"
+        className="btn-timerange"
       >
         This Month
       </ToggleButton>

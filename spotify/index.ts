@@ -27,9 +27,9 @@ export const initializeSpotifyApi = async () => {
  * Get a List of Current User's Playlists
  * https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
  */
-export const getUserPlaylists = async () => {
+export const getUserPlaylists = async (limit?: number) => {
   try {
-    const data = await spotifyApi.getUserPlaylists()
+    const data = await spotifyApi.getUserPlaylists({ limit: limit })
     const playlists = data.body
     return playlists
   } catch (err) {
@@ -183,6 +183,10 @@ export const getArtistTopTracks = async (artist: SpotifyApi.ArtistObjectFull, co
   }
 }
 
+/**
+ * Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community's listening history
+ * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artists-related-artists/
+ */
 export const getArtistRelatedArtists = async (artistId: string) => {
   try {
     const data = await spotifyApi.getArtistRelatedArtists(artistId)
@@ -193,6 +197,10 @@ export const getArtistRelatedArtists = async (artistId: string) => {
   }
 }
 
+/**
+ * Get audio feature information for a single track identified by its unique Spotify ID
+ * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-audio-features/
+ */
 export const getAudioFeaturesForTrack = async (trackId: string) => {
   try {
     const data = await spotifyApi.getAudioFeaturesForTrack(trackId)
@@ -220,6 +228,25 @@ export const getTopArtistsTopTracks = async (
     }
 
     return topArtistTopTracks
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+/**
+ * Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.
+ * If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+ * For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
+ * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-recommendations/
+ */
+export const getRecommendations = async (seedArtistsIds: string[]) => {
+  try {
+    const data = await spotifyApi.getRecommendations({
+      seed_artists: seedArtistsIds,
+      limit: 100,
+    })
+    const recommendations = data.body
+    return recommendations
   } catch (err) {
     console.log(err)
   }

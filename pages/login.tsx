@@ -3,7 +3,7 @@ import { signIn } from 'next-auth/react'
 
 const login = (): JSX.Element => {
   return (
-    <div>
+    <main>
       <Row className="align-items-center g-5 py-5 min-vh-100">
         <Col className="d-flex justify-content-center">
           <Button
@@ -14,7 +14,7 @@ const login = (): JSX.Element => {
           </Button>
         </Col>
       </Row>
-    </div>
+    </main>
   )
 }
 

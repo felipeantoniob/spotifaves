@@ -1,37 +1,24 @@
 @use '../vendors/bootstrap' as b;
 @use "../abstracts/variables" as v;
 
+main,
 body {
   background-color: v.$background-color;
-
-  .form-control,
-  .form-select,
-  .list-group-item {
-    // background-color: b.$gray-900;
-    background-color: v.$surface-color;
-    color: b.$gray-300;
-    border: 0em !important;
-  }
-
-  // .form-check-input {
-  //   &:checked {
-  //     background-color: b.$gray-700;
-  //     border-color: b.$gray-700;
-  //   }
-  //   &:focus {
-  //     border-color: b.$gray-300;
-  //     outline: 0;
-  //     -webkit-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  //     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  //   }
-  // }
 }
 
-.profile-pic {
+.form-control,
+.form-select,
+.list-group-item {
+  background-color: v.$surface-color;
+  color: b.$gray-300;
+  border: 0em !important;
+}
+
+.img-user-profile {
   border-radius: 100%;
 }
 
-.artist-profile-pic {
+.img-artist-profile {
   border-radius: 100%;
   cursor: pointer;
   object-fit: cover;
@@ -41,7 +28,7 @@ body {
   }
 }
 
-.artist-modal-img {
+.img-artist-modal {
   border-radius: 100%;
   object-fit: cover;
   // &:hover {
@@ -50,7 +37,7 @@ body {
   // }
 }
 
-.playlist-pic {
+.img-playlist-cover {
   cursor: pointer;
   object-fit: cover;
   &:hover {
@@ -59,7 +46,7 @@ body {
   }
 }
 
-.playlist-mosaic-pic {
+.img-created-playlist {
   // cursor: pointer;
   object-fit: cover;
   // &:hover {
@@ -72,7 +59,7 @@ body {
   color: rgb(81, 228, 133) !important;
 }
 
-.green-text {
+.text-green {
   color: rgb(29, 185, 84);
 }
 
@@ -124,4 +111,21 @@ body {
   &:hover {
     color: rgb(30, 215, 96);
   }
+}
+
+.hover-img {
+  &:hover {
+    img {
+      filter: brightness(50%);
+      transition: all 0.25s cubic-bezier(0.3, 0, 0.4, 1) 0s;
+    }
+    .info-icon {
+      opacity: 1;
+    }
+  }
+}
+
+.info-icon {
+  opacity: 0;
+  transition: all 0.5s;
 }
