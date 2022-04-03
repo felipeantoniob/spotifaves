@@ -11,10 +11,10 @@ import TimeRangeRadio from '../components/TimeRangeRadio'
 import { shuffleArray } from '../utils'
 import { timeRangeDescription } from '../utils'
 import {
-  getTopArtists,
   addTracksToPlaylist,
   createNewPlaylist,
   getPlaylistDetails,
+  getTopArtists,
   getTopArtistsTopTracks,
 } from '../spotify'
 import { timeRangeType } from '../types'
@@ -27,15 +27,6 @@ const Artists = (): JSX.Element => {
       router.push('/login')
     },
   })
-
-  // useEffect(() => {
-  //   if (status === 'authenticated') {
-  //     console.log('authenticated')
-  //   }
-  //   if (status === 'loading') {
-  //     console.log('loading')
-  //   }
-  // }, [status])
 
   const { data: session } = useSession()
 
@@ -96,7 +87,6 @@ const Artists = (): JSX.Element => {
     <main>
       {topArtists && (
         <Container className="pt-5">
-          {/* <button onClick={getTopArtistsTopTracks}>test</button> */}
           <Row className="d-flex align-items-center justify-content-between pb-5">
             <Col xs={12} md="auto" className="text-center">
               <h2 className="fw-bold high-emphasis-text">Top Artists</h2>

@@ -21,7 +21,7 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/ */}
         <link rel="manifest" href="/manifest.json" />
         {/* <link rel="shortcut icon" href="/favicons/favicon.ico" /> */}
-        <link rel="icon" href="/favicons/favicon.ico" />
+        <link rel="icon" href="favicons/favicon.ico" />
 
         <title>Spotify App</title>
         <meta name="description" content="A web app for visualizing personalized Spotify data" />

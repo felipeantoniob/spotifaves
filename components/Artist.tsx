@@ -18,8 +18,6 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
   const handleShow = (): void => setShow(true)
 
   const handleClick = async () => {
-    // console.log('Artist props:')
-    // console.log({ ...artist })
     setSelectedArtist({ ...(artist as SpotifyApi.ArtistObjectFull) })
     const artistTopTracks = await getArtistTopTracks(artist, 'US')
     setTopTracks(artistTopTracks)
@@ -27,32 +25,6 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
     setRelatedArtists(artistRelatedArtists)
     handleShow()
   }
-
-  // const getArtistTopTracks = async (): Promise<void> => {
-  //   const country = 'US'
-
-  //   try {
-  //     const data = await spotifyApi.getArtistTopTracks(artist.id, country)
-  //     // console.log('Artist Top Tracks:')
-  //     // console.log(data.body.tracks)
-  //     let topTracksArray = data.body.tracks
-  //     setTopTracks(topTracksArray)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
-  // const getArtistRelatedArtists = async (): Promise<void> => {
-  //   try {
-  //     const data = await spotifyApi.getArtistRelatedArtists(artist.id)
-  //     // console.log('Artist Related Artists:')
-  //     // console.log(data.body.artists)
-  //     let relatedArtistsArray = data.body.artists
-  //     setRelatedArtists(relatedArtistsArray)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
 
   return (
     <div className="mb-5">
@@ -67,6 +39,8 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
       />
       <a
         href={artist.external_urls.spotify}
+        target="_blank"
+        rel="noreferrer"
         className="d-flex justify-content-center pt-3 text-decoration-none text-light"
       >
         {artist.name}

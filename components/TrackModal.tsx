@@ -13,8 +13,6 @@ const TrackModal = ({
   if (audioFeatures) {
     const tempo = audioFeatures!.tempo
     const loudness = audioFeatures!.loudness
-    // console.log(tempo)
-    // console.log(loudness)
   }
 
   return (

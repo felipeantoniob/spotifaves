@@ -134,83 +134,88 @@ export default function Home(): JSX.Element {
                 </div>
               </Col>
             </Row>
-            <Row className="pb-5">
-              <Col xs={12} lg={6}>
-                <Row className="d-flex justify-content-between align-items-center">
-                  <Col
-                    xs={12}
-                    md="auto"
-                    className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
-                  >
-                    Top Artists of All Time
-                  </Col>
-                  <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
-                    <Link href="/artists" passHref>
-                      <Button className="px-4 py-2 btn-see-more">See More</Button>
-                    </Link>
-                  </Col>
-                </Row>
-                {topArtists && (
-                  <div className="mb-5">
-                    {topArtists.map((artist: SpotifyApi.ArtistObjectFull, index) => (
-                      <div key={index} className="d-flex align-items-center my-4">
-                        <Image
-                          src={artist.images[0].url}
-                          alt="profile picture"
-                          height={50}
-                          width={50}
-                          className="img-artist-profile"
-                        />
-                        <div className="ms-3 high-emphasis-text">{artist.name}</div>
-                      </div>
-                      // <Artist key={index} {...artist} />
-                    ))}
-                  </div>
-                )}
-              </Col>
-              <Col xs={12} lg={6}>
-                <Row className="d-flex justify-content-between align-items-center">
-                  <Col
-                    xs={12}
-                    md="auto"
-                    className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
-                  >
-                    Top Tracks of All Time
-                  </Col>
-                  <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
-                    <Link href="/tracks" passHref>
-                      <Button className="px-4 py-2 btn-see-more">See More</Button>
-                    </Link>
-                  </Col>
-                </Row>
 
-                {topTracks && (
-                  <div className="mb-5">
-                    {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
-                      <div key={index} className="d-flex align-items-center my-4">
-                        <Image
-                          src={track.album.images[0].url}
-                          alt="album picture"
-                          height={50}
-                          width={50}
-                        />
-                        <div className="ms-3">
-                          <div className="high-emphasis-text">{track.name}</div>
-                          <div className="medium-emphasis-text">
-                            {track.artists
-                              .map((artist: SpotifyApi.ArtistObjectSimplified) => {
-                                return artist.name
-                              })
-                              .join(', ')}
-                            &nbsp;&nbsp;·&nbsp;&nbsp;
-                            {track.album.name}
+            <Row className="pb-5">
+              {topArtists && topTracks && (
+                <Col xs={12} lg={6}>
+                  <Row className="d-flex justify-content-between align-items-center">
+                    <Col
+                      xs={12}
+                      md="auto"
+                      className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
+                    >
+                      Top Artists of All Time
+                    </Col>
+                    <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
+                      <Link href="/artists" passHref>
+                        <Button className="px-4 py-2 btn-see-more">See More</Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                  {topArtists && (
+                    <div className="mb-5">
+                      {topArtists.map((artist: SpotifyApi.ArtistObjectFull, index) => (
+                        <div key={index} className="d-flex align-items-center my-4">
+                          <Image
+                            src={artist.images[0].url}
+                            alt="profile picture"
+                            height={50}
+                            width={50}
+                            className="img-artist-profile"
+                          />
+                          <div className="ms-3 high-emphasis-text">{artist.name}</div>
+                        </div>
+                        // <Artist key={index} {...artist} />
+                      ))}
+                    </div>
+                  )}
+                </Col>
+              )}
+              {topTracks && topArtists && (
+                <Col xs={12} lg={6}>
+                  <Row className="d-flex justify-content-between align-items-center">
+                    <Col
+                      xs={12}
+                      md="auto"
+                      className="d-flex justify-content-center fw-bold high-emphasis-text mb-3"
+                    >
+                      Top Tracks of All Time
+                    </Col>
+                    <Col xs={12} md="auto" className="d-flex justify-content-center mb-3">
+                      <Link href="/tracks" passHref>
+                        <Button className="px-4 py-2 btn-see-more">See More</Button>
+                      </Link>
+                    </Col>
+                  </Row>
+
+                  {topTracks && (
+                    <div className="mb-5">
+                      {topTracks.map((track: SpotifyApi.TrackObjectFull, index) => (
+                        <div key={index} className="d-flex align-items-center my-4">
+                          <Image
+                            src={track.album.images[0].url}
+                            alt="album picture"
+                            height={50}
+                            width={50}
+                          />
+                          <div className="ms-3">
+                            <div className="high-emphasis-text">{track.name}</div>
+                            <div className="medium-emphasis-text">
+                              {track.artists
+                                .map((artist: SpotifyApi.ArtistObjectSimplified) => {
+                                  return artist.name
+                                })
+                                .join(', ')}
+                              &nbsp;&nbsp;·&nbsp;&nbsp;
+                              {track.album.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </Col>
+                      ))}
+                    </div>
+                  )}
+                </Col>
+              )}
             </Row>
           </div>
         </Container>
