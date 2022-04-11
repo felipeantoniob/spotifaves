@@ -128,6 +128,7 @@ export default function Home(): JSX.Element {
                     onClick={() => {
                       signOut()
                     }}
+                    data-cy="logout-button"
                   >
                     Sign Out
                   </Button>

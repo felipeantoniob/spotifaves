@@ -85,6 +85,11 @@ export default NextAuth({
       authorization: SPOTIFY_AUTHORIZATION_URL,
     }),
   ],
+  theme: {
+    colorScheme: 'dark', // "auto" | "dark" | "light"
+    // brandColor: '', // Hex color code
+    // logo: '', // Absolute URL to image
+  },
   // The secret should be set to a reasonably long random string.
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
   // a separate secret is defined explicitly for encrypting the JWT.
