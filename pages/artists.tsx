@@ -34,7 +34,7 @@ const Artists = (): JSX.Element => {
   const [showFooter, setShowFooter] = useState(false)
 
   const [topArtists, setTopArtists] = useState<SpotifyApi.ArtistObjectFull[]>()
-  const [timeRange, setTimeRange] = useState<timeRangeType>('long_term')
+  const [timeRange, setTimeRange] = useState<timeRangeType>('short_term')
   const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
 
   useEffect(() => {

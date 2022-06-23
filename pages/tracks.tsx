@@ -29,7 +29,7 @@ const Tracks = (): JSX.Element => {
   const [show, setShow] = useState(false)
   const [showFooter, setShowFooter] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>()
-  const [timeRange, setTimeRange] = useState<timeRangeType>('long_term')
+  const [timeRange, setTimeRange] = useState<timeRangeType>('short_term')
   const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
 
   useEffect(() => {

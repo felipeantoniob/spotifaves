@@ -9,6 +9,7 @@ import {
 } from 'react-icons/bs'
 import { MdHistory, MdOutlineQueueMusic } from 'react-icons/md'
 import { GiMicrophone } from 'react-icons/gi'
+import { FiPieChart } from 'react-icons/fi'
 
 const Header = (): JSX.Element => {
   return (
@@ -49,6 +50,14 @@ const Header = (): JSX.Element => {
                   </a>
                 </Nav.Link>
               </Link>
+              <Link href="/genres" passHref>
+                <Nav.Link className="px-3 g-5">
+                  <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
+                    <FiPieChart size="1.5rem" />
+                    Top Genres
+                  </a>
+                </Nav.Link>
+              </Link>
               <Link href="/recent" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
@@ -57,14 +66,14 @@ const Header = (): JSX.Element => {
                   </a>
                 </Nav.Link>
               </Link>
-              <Link href="/playlists" passHref>
+              {/* <Link href="/playlists" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
                     <MdOutlineQueueMusic size="1.5rem" />
                     Playlists
                   </a>
                 </Nav.Link>
-              </Link>
+              </Link> */}
             </Nav>
           </Navbar.Collapse>
         </Container>
