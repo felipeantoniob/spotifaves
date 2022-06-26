@@ -45,7 +45,7 @@ async function refreshAccessToken(token: JWT) {
         refresh_token: token.refreshToken as string,
       })
 
-    console.log(url)
+    // console.log(url)
 
     const response = await fetch(url, {
       headers: {
@@ -94,7 +94,6 @@ export default NextAuth({
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
   // a separate secret is defined explicitly for encrypting the JWT.
   secret: process.env.NEXTAUTH_SECRET,
-  // secret: process.env.NEXT_PUBLIC_SECRET,
   session: {
     // Use JSON Web Tokens for session instead of database sessions.
     // This option can be used with or without a database for users/accounts.

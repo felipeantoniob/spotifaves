@@ -29,7 +29,6 @@ export const getGenresArtistsArray = (artists: SpotifyApi.ArtistObjectFull[], ge
       artistArray.push(artist.name)
     }
   })
-  // console.log(artistArray)
   return artistArray
 }
 
@@ -48,7 +47,6 @@ export const getGenreChartData = (
     const artistsArray = getGenresArtistsArray(artists!, genre!)
     genresArtistsArray.push({ genre: genre, artists: artistsArray })
   })
-  console.log(genresArtistsArray)
   return genresArtistsArray
 }
 
@@ -57,7 +55,6 @@ export const getGenreFrequency = (genresArray: string[]) => {
   genresArray.map((genre) => {
     genreFrequency[genre] = (genreFrequency[genre] || 0) + 1
   })
-  // console.log(genreFrequency)
   return genreFrequency
 }
 

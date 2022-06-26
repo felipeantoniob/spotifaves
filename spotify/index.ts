@@ -110,7 +110,6 @@ export const getTopTracks = async (
   try {
     const data = await spotifyApi.getMyTopTracks({ time_range: timeRange, limit: limit })
     const topTracks = data.body.items
-    // console.log(topTracks)
     return topTracks
   } catch (err) {
     console.error(err)

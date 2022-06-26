@@ -45,10 +45,7 @@ const Genres = () => {
             .slice(0, 20)
             .map((genre) => genre[0])
 
-          // console.log(topGenresArray)
-
           const genresArtistsObject = getGenreChartData(topGenresArray, topArtists!)
-          console.log(genresArtistsObject)
           setGenreChartData(genresArtistsObject)
         }
       } catch (err) {
@@ -59,27 +56,31 @@ const Genres = () => {
   }, [session, timeRange])
 
   return (
-    <>
-      <Container className="pt-5">
-        <Row className="d-flex align-items-center justify-content-between pb-5">
-          <Col xs={12} md="auto" className="text-center">
-            <h2 className="fw-bold high-emphasis-text">Top Genres</h2>
-          </Col>
-          <Col xs={12} md="auto" className="text-center">
-            <TimeRangeRadio timeRange={timeRange} setTimeRange={setTimeRange} />
-          </Col>
-        </Row>
-      </Container>
-      <Container fluid>
-        <Row className="justify-content-center mb-5">
-          <Col xs={12} md={9} lg={6} xl={6}>
-            {!!genreChartData && !!topArtists && (
-              <GenrePieChart genreChartData={genreChartData} topArtists={topArtists} />
-            )}
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <main>
+      {genreChartData && (
+        <>
+          <Container className="pt-5">
+            <Row className="d-flex align-items-center justify-content-between pb-5">
+              <Col xs={12} md="auto" className="text-center">
+                <h2 className="fw-bold high-emphasis-text">Top Genres</h2>
+              </Col>
+              <Col xs={12} md="auto" className="text-center">
+                <TimeRangeRadio timeRange={timeRange} setTimeRange={setTimeRange} />
+              </Col>
+            </Row>
+          </Container>
+          <Container fluid>
+            <Row className="justify-content-center mb-5">
+              <Col xs={12} md={9} lg={6} xl={4}>
+                {!!genreChartData && !!topArtists && (
+                  <GenrePieChart genreChartData={genreChartData} topArtists={topArtists} />
+                )}
+              </Col>
+            </Row>
+          </Container>
+        </>
+      )}
+    </main>
   )
 }
 
