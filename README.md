@@ -19,17 +19,17 @@
 <br />
 <div align="center">
 
-  <h1 align="center">Spotify Profile</h1>
+  <h1 align="center">Spotifaves</h1>
 
   <p align="center">
  A website where users can view their top artists, top tracks, top genres, and recently played tracks on Spotify. They can also generate playlists based on their personalized data to share with friends.
  <br />
   <br />
-     <a href="next-spotify-app.vercel.app/">View Demo</a>
+     <a href="spotifaves.vercel.app/">View Demo</a>
     ·
-    <a href="https://github.com/felipeantoniob/next-spotify-app/issues">Report Bug</a>
+    <a href="https://github.com/felipeantoniob/spotifaves/issues">Report Bug</a>
     ·
-    <a href="https://github.com/felipeantoniob/next-spotify-app/issues">Request Feature</a>
+    <a href="https://github.com/felipeantoniob/spotifaves/issues">Request Feature</a>
   </p>
 </div>
 
@@ -37,7 +37,7 @@
 
 ## About The Project
 
-[![Tutorial][tutorial-gif]](next-spotify-app.vercel.app/)
+[![Tutorial][tutorial-gif]](spotifaves.vercel.app/)
 
 I created this website to allow users to more easily visualize their favourites on Spotify in a simple and convenient interface.
 
@@ -52,8 +52,6 @@ They can then generate unique playlists based on their data, for example:
 Users can select the time frame from which the data is computed, long term (calculated from several years of data and including all new data as it becomes available), medium term (approximately last 6 months), or short term (approximately last 4 weeks).
 
 Being able to see this personalized data is a feature that I've found extremely useful for sharing and discussing music with friends.
-
-<!-- I often find it difficult to answer when I'm asked what I've been listening to lately, or which artists I've been listening to the past few months. But with the help of this website, I can instantly share a playlist with them and go straight to discussing the music that I love. -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -90,6 +88,7 @@ Being able to see this personalized data is a feature that I've found extremely 
 ### Prerequisites
 
 - npm
+
   ```sh
   npm install npm@latest -g
   ```
@@ -102,7 +101,7 @@ Being able to see this personalized data is a feature that I've found extremely 
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/felipeantoniob/spotifaves.git
    ```
 1. Install packages
 
@@ -182,7 +181,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Felipe Antonio Buencamino - felipebuencamino@gmail.com.com
 
-Project Link: [https://github.com/felipeantoniob/next-spotify-app](https://github.com/felipeantoniob/next-spotify-app)
+Project Link: [https://github.com/felipeantoniob/spotifaves](https://github.com/felipeantoniob/spotifaves)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -201,14 +200,14 @@ Project Link: [https://github.com/felipeantoniob/next-spotify-app](https://githu
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[stars-shield]: https://img.shields.io/github/stars/felipeantoniob/next-spotify-app.svg?style=for-the-badge
-[stars-url]: https://github.com/felipeantoniob/next-spotify-app/stargazers
-[issues-shield]: https://img.shields.io/github/issues/felipeantoniob/next-spotify-app.svg?style=for-the-badge
-[issues-url]: https://github.com/felipeantoniob/next-spotify-app/issues
-[license-shield]: https://img.shields.io/github/license/felipeantoniob/next-spotify-app.svg?style=for-the-badge
-[license-url]: https://github.com/felipeantoniob/next-spotify-app/blob/master/LICENSE.txt
-[github-repo-size-shield]: https://img.shields.io/github/repo-size/felipeantoniob/next-spotify-app?style=for-the-badge
-[last-commit-badge]: https://img.shields.io/github/last-commit/felipeantoniob/next-spotify-app?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/felipeantoniob/spotifaves.svg?style=for-the-badge
+[stars-url]: https://github.com/felipeantoniob/spotifaves/stargazers
+[issues-shield]: https://img.shields.io/github/issues/felipeantoniob/spotifaves.svg?style=for-the-badge
+[issues-url]: https://github.com/felipeantoniob/spotifaves/issues
+[license-shield]: https://img.shields.io/github/license/felipeantoniob/spotifaves.svg?style=for-the-badge
+[license-url]: https://github.com/felipeantoniob/spotifaves/blob/master/LICENSE.txt
+[github-repo-size-shield]: https://img.shields.io/github/repo-size/felipeantoniob/spotifaves?style=for-the-badge
+[last-commit-badge]: https://img.shields.io/github/last-commit/felipeantoniob/spotifaves?style=for-the-badge
 [top-tracks-screenshot]: /public/images/top_tracks_screenshot.png
 [top-genres-screenshot]: /public/images/top_genres_screenshot.png
 [top-artists-screenshot]: /public/images/top_artists_screenshot.png

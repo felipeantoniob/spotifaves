@@ -31,7 +31,7 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
           property="og:description"
           content="A web app for visualizing personalized Spotify data"
         />
-        <meta property="og:url" content="https://next-spotify-app.vercel.app/" />
+        <meta property="og:url" content="https://spotifaves.vercel.app/" />
         <meta property="og:site_name" content="Spotify App" />
         {/* <meta property="og:image" content="https://spotify-profile.herokuapp.com/og.png" />
         <meta property="og:image:width" content="1200" />
@@ -48,75 +48,75 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
         <link
           rel="apple-touch-icon"
           sizes="57x57"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-57x57.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-57x57.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="60x60"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-60x60.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-60x60.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="72x72"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-72x72.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-72x72.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="76x76"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-76x76.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-76x76.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="114x114"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-114x114.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-114x114.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="120x120"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-120x120.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-120x120.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="144x144"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-144x144.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-144x144.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="152x152"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-152x152.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-152x152.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="next-spotify-app.vercel.app/favicons/apple-icon-180x180.png"
+          href="spotifaves.vercel.app/favicons/apple-icon-180x180.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="192x192"
-          href="next-spotify-app.vercel.app/favicons/android-icon-192x192.png"
+          href="spotifaves.vercel.app/favicons/android-icon-192x192.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="next-spotify-app.vercel.app/favicons/favicon-32x32.png"
+          href="spotifaves.vercel.app/favicons/favicon-32x32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="96x96"
-          href="next-spotify-app.vercel.app/favicons/favicon-96x96.png"
+          href="spotifaves.vercel.app/favicons/favicon-96x96.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="next-spotify-app.vercel.app/favicons/favicon-16x16.png"
+          href="spotifaves.vercel.app/favicons/favicon-16x16.png"
         />
         <meta
           name="msapplication-TileImage"
-          content="next-spotify-app.vercel.app/favicons/ms-icon-144x144.png"
+          content="spotifaves.vercel.app/favicons/ms-icon-144x144.png"
         />
         <meta name="msapplication-TileColor" content="#181818" />
         <meta name="theme-color" content="#181818" />

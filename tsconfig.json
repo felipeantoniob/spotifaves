@@ -15,6 +15,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "cypress/plugins/index.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "cypress/plugins/index.js",
+    "cypress/integration/movie-database.spec.js"
+, "next.config.js"  ],
   "exclude": ["node_modules"]
 }

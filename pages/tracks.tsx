@@ -14,7 +14,7 @@ import {
   createNewPlaylist,
   getPlaylistDetails,
 } from '../spotify'
-import { timeRangeType } from '../types'
+import { timeRangeType as TimeRangeType } from '../types'
 
 const Tracks = (): JSX.Element => {
   const router = useRouter()
@@ -29,7 +29,7 @@ const Tracks = (): JSX.Element => {
   const [show, setShow] = useState(false)
   const [showFooter, setShowFooter] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>()
-  const [timeRange, setTimeRange] = useState<timeRangeType>('short_term')
+  const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
   const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
 
   useEffect(() => {

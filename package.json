@@ -1,6 +1,22 @@
 {
-  "name": "next-spotify-app",
+  "name": "spotifaves",
   "version": "0.1.0",
+  "description": "A spotify app",
+  "author": "Felipe Antonio Buencamino",
+  "license": "MIT",
+  "homepage": "https://github.com/felipeantoniob/spotifaves#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipeantoniob/spotifaves.git"
+  },
+  "bugs": {
+    "url": "https://github.com/felipeantoniob/spotifaves/issues"
+  },
+  "engines": {
+    "node": "^14.17.3",
+    "npm": "^6.14.3",
+    "yarn": "^1.22.5"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
