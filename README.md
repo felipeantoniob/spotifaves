@@ -204,7 +204,7 @@ Project Link: [https://github.com/felipeantoniob/spotifaves](https://github.com/
 [stars-url]: https://github.com/felipeantoniob/spotifaves/stargazers
 [issues-shield]: https://img.shields.io/github/issues/felipeantoniob/spotifaves.svg?style=for-the-badge
 [issues-url]: https://github.com/felipeantoniob/spotifaves/issues
-[license-shield]: https://img.shields.io/github/license/felipeantoniob/spotifaves.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/felipeantoniob/spotifaves?style=for-the-badge
 [license-url]: https://github.com/felipeantoniob/spotifaves/blob/master/LICENSE.txt
 [github-repo-size-shield]: https://img.shields.io/github/repo-size/felipeantoniob/spotifaves?style=for-the-badge
 [last-commit-badge]: https://img.shields.io/github/last-commit/felipeantoniob/spotifaves?style=for-the-badge
