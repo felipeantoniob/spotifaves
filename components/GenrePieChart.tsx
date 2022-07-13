@@ -1,8 +1,8 @@
-import React from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Pie, Doughnut } from 'react-chartjs-2'
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
+import { Pie } from 'react-chartjs-2'
+// import { Doughnut } from 'react-chartjs-2'
 
-import { getGenresArtistsArray } from '../utils/index'
+import { getGenresArtists } from '../utils/getGenresArtists'
 
 interface GenreArtistObjectProps {
   genre: string
@@ -94,10 +94,9 @@ const GenrePieChart = ({ genreChartData, topArtists }: GenrePieChartProps) => {
               tooltip: {
                 callbacks: {
                   label: (context) => {
-                    return `${context.label}: ${getGenresArtistsArray(
-                      topArtists!,
-                      context.label
-                    ).join(', ')}`
+                    return `${context.label}: ${getGenresArtists(topArtists!, context.label).join(
+                      ', '
+                    )}`
                   },
                 },
                 bodyFont: { size: 12 },

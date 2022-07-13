@@ -1,8 +1,8 @@
-export type timeRangeType = 'long_term' | 'medium_term' | 'short_term'
+export type TimeRangeType = 'long_term' | 'medium_term' | 'short_term'
 
 export interface TimeRangeRadioProps {
-  timeRange: timeRangeType
-  setTimeRange: React.Dispatch<React.SetStateAction<timeRangeType>>
+  timeRange: TimeRangeType
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRangeType>>
 }
 
 export interface ArtistModalProps {

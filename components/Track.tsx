@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import TrackModal from './TrackModal'
-import { msToMinutesAndSeconds } from '../utils'
+import { msToMinutesAndSeconds } from '../utils/msToMinutesAndSeconds'
 import { getAudioFeaturesForTrack } from '../spotify'
 
 import { MdInfo } from 'react-icons/md'

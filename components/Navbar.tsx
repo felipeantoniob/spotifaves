@@ -17,7 +17,7 @@ const Header = (): JSX.Element => {
       <Navbar expand="lg" variant="dark" className="py-3">
         <Container fluid>
           <Navbar.Brand className="px-3">
-            <Link href="/" passHref>
+            <Link href="/profile" passHref>
               <a>
                 <BsSpotify size="3rem" className="spotify-icon" />
               </a>
@@ -26,7 +26,7 @@ const Header = (): JSX.Element => {
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav" className="nav-link-container">
             <Nav className="ms-auto align-items-center fs-5">
-              <Link href="/" passHref>
+              <Link href="/profile" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
                     <BsPersonFill size="1.5rem" />

@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import GenrePieChart from '../components/GenrePieChart'
 import TimeRangeRadio from '../components/TimeRangeRadio'
-import { getTopArtists } from '../spotify'
-import { timeRangeType } from '../types'
-import { getGenreChartData, getGenreFrequency, getAllGenres } from '../utils'
+import Spinner from '../components/Spinner'
+
+import { TimeRangeType } from '../types'
+import { getGenreChartData } from '../utils/getGenreChartData'
+import { getAllGenres } from '../utils/getAllGenres'
+import { getGenreFrequency } from '../utils/getGenreFrequency'
+import useUserTopArtists from '../hooks/useUserTopArtists'
 
 interface GenreObjectProps {
   genre: string
@@ -19,41 +23,33 @@ const Genres = () => {
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/login')
+      router.push('/')
     },
   })
 
-  const { data: session } = useSession()
+  const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
 
-  const [topArtists, setTopArtists] = useState<SpotifyApi.ArtistObjectFull[]>()
-  const [timeRange, setTimeRange] = useState<timeRangeType>('short_term')
-  const [genreChartData, setGenreChartData] = useState<GenreObjectProps[]>()
+  let genreChartData: GenreObjectProps[] = []
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (session) {
-          const topArtists = await getTopArtists(timeRange, 20)
-          setTopArtists(topArtists)
+  const topArtistsQuery = useUserTopArtists(timeRange, 50)
+  let topArtists: SpotifyApi.ArtistObjectFull[] = []
 
-          const allGenresArray = getAllGenres(topArtists!)
+  if (topArtistsQuery.isError) {
+    signOut()
+    router.push('/')
+  }
 
-          const genreFrequencyArray = getGenreFrequency(allGenresArray)
-
-          const topGenresArray = Object.entries(genreFrequencyArray)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 20)
-            .map((genre) => genre[0])
-
-          const genresArtistsObject = getGenreChartData(topGenresArray, topArtists!)
-          setGenreChartData(genresArtistsObject)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData()
-  }, [session, timeRange])
+  if (topArtistsQuery.isSuccess) {
+    topArtists = topArtistsQuery.data!.body.items
+    const allGenresArray = getAllGenres(topArtists!)
+    const genreFrequencyArray = getGenreFrequency(allGenresArray)
+    const topGenresArray = Object.entries(genreFrequencyArray)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map((genre) => genre[0])
+    const genresArtistsObject = getGenreChartData(topGenresArray, topArtists!)
+    genreChartData = genresArtistsObject
+  }
 
   return (
     <main>
@@ -69,15 +65,23 @@ const Genres = () => {
               </Col>
             </Row>
           </Container>
-          <Container fluid>
-            <Row className="justify-content-center mb-5">
-              <Col xs={12} md={9} lg={6} xl={4}>
-                {!!genreChartData && !!topArtists && (
-                  <GenrePieChart genreChartData={genreChartData} topArtists={topArtists} />
-                )}
-              </Col>
-            </Row>
-          </Container>
+          {topArtistsQuery.isLoading && (
+            <div>
+              <Spinner />
+            </div>
+          )}
+
+          {topArtistsQuery.isSuccess && (
+            <Container fluid>
+              <Row className="justify-content-center mb-5">
+                <Col xs={12} md={9} lg={6} xl={4}>
+                  {!!genreChartData && !!topArtists && (
+                    <GenrePieChart genreChartData={genreChartData} topArtists={topArtists} />
+                  )}
+                </Col>
+              </Row>
+            </Container>
+          )}
         </>
       )}
     </main>

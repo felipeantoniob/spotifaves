@@ -24,99 +24,6 @@ export const initializeSpotifyApi = async () => {
 }
 
 /**
- * Get a List of Current User's Playlists
- * https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
- */
-export const getUserPlaylists = async (limit?: number) => {
-  try {
-    const data = await spotifyApi.getUserPlaylists({ limit: limit })
-    const playlists = data.body
-    return playlists
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
- * Get detailed profile information about the current user (including the current user's username)
- * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-current-users-profile/
- */
-export const getUserInfo = async () => {
-  try {
-    const data = await spotifyApi.getMe()
-    const userInfo = data.body
-    return userInfo
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
- * Get Current User's Recently Played Tracks
- * https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/
- */
-export const getRecentlyPlayedTracks = async () => {
-  try {
-    const data = await spotifyApi.getMyRecentlyPlayedTracks({
-      limit: 50,
-    })
-    const recentTracks = data.body.items
-    const recentTracksArray = recentTracks.map((item) => item.track)
-    return recentTracksArray
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
- * Get the current user's followed artists.
- * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-followed/
- */
-export const getFollowedArtists = async () => {
-  try {
-    const data = await spotifyApi.getFollowedArtists({ limit: 1 })
-    const followedArtists = data.body
-    return followedArtists
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
- * Get a User's Top Artists
- * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
- */
-export const getTopArtists = async (
-  timeRange: 'long_term' | 'medium_term' | 'short_term',
-  limit: number
-) => {
-  try {
-    const data = await spotifyApi.getMyTopArtists({ time_range: timeRange, limit: limit })
-    const topArtists = data.body.items
-    return topArtists
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
- * Get a User's Top Tracks
- * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
- */
-export const getTopTracks = async (
-  timeRange: 'long_term' | 'medium_term' | 'short_term',
-  limit: number
-) => {
-  try {
-    const data = await spotifyApi.getMyTopTracks({ time_range: timeRange, limit: limit })
-    const topTracks = data.body.items
-    return topTracks
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/**
  * Create a playlist for a Spotify user (The playlist will be empty until you add tracks)
  * https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist/
  */
@@ -174,6 +81,7 @@ export const getPlaylistDetails = async (playlistId: string) => {
  */
 export const getArtistTopTracks = async (artist: SpotifyApi.ArtistObjectFull, country: string) => {
   try {
+    initializeSpotifyApi()
     const data = await spotifyApi.getArtistTopTracks(artist.id, country)
     const artistTopTracks = data.body.tracks
     return artistTopTracks
@@ -210,19 +118,19 @@ export const getAudioFeaturesForTrack = async (trackId: string) => {
   }
 }
 
-export const getTopArtistsTopTracks = async (
-  topArtists: SpotifyApi.ArtistObjectFull[],
-  numberOfArtists: number,
-  numberOfTracks: number
+export const getMultipleArtistsTopTracks = async (
+  artists: SpotifyApi.ArtistObjectFull[],
+  artistsLimit: number,
+  tracksLimit: number
 ) => {
   try {
-    const filteredArtists = topArtists!.slice(0, numberOfArtists)
+    const filteredArtists = artists!.slice(0, artistsLimit)
 
     let topArtistTopTracks: SpotifyApi.TrackObjectFull[] = []
 
     for (const artist of filteredArtists) {
       const topTracks = (await getArtistTopTracks(artist, 'US')) as SpotifyApi.TrackObjectFull[]
-      const filteredTracks = topTracks.slice(0, numberOfTracks)
+      const filteredTracks = topTracks.slice(0, tracksLimit)
       topArtistTopTracks = [...topArtistTopTracks, ...filteredTracks]
     }
 

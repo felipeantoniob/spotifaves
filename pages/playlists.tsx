@@ -1,53 +1,50 @@
 import { Container, Row } from 'react-bootstrap'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import { getUserPlaylists } from '../spotify'
+import useUserPlaylists from '../hooks/useUserPlaylists'
 
 const Playlists = (): JSX.Element => {
   const router = useRouter()
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/login')
+      router.push('/')
     },
   })
   const { data: session } = useSession()
-  const [playlists, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (session) {
-          const playlists = await getUserPlaylists(50)
-          setPlaylists(playlists!.items)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData()
-  }, [session])
+  const userPlaylistsQuery = useUserPlaylists(20)
+  let userPlaylists: SpotifyApi.PlaylistObjectSimplified[] =
+    {} as SpotifyApi.PlaylistObjectSimplified[]
+  if (userPlaylistsQuery.isLoading) {
+    return <div>Loading...</div>
+  }
+  if (userPlaylistsQuery.isSuccess) {
+    userPlaylists = userPlaylistsQuery.data!.body.items
+  }
 
   return (
     <main>
-      {playlists && (
+      {userPlaylists && (
         <>
           <Container className="pt-5">
             <h2 className="fw-bold high-emphasis-text pb-5">Your Playlists</h2>
             <Row md={2} lg={5} className="text-center mb-5">
-              {playlists.map((playlist: SpotifyApi.PlaylistObjectSimplified) => {
+              {userPlaylists.map((playlist: SpotifyApi.PlaylistObjectSimplified) => {
                 return (
                   <div key={playlist.id} className="mb-5">
-                    <Image
-                      src={playlist.images[0].url}
-                      alt="profile picture"
-                      height={224}
-                      width={224}
-                      className="img-playlist-cover"
-                    />
+                    {/* {playlist.images[0].url && (
+                      <Image
+                        src={playlist.images[0].url}
+                        alt="profile picture"
+                        height={224}
+                        width={224}
+                        className="img-playlist-cover"
+                      />
+                    )} */}
+
                     <a
                       href={playlist.external_urls.spotify}
                       target="_blank"
