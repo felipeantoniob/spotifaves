@@ -1,24 +1,18 @@
-import { useState } from 'react'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { Container, Row, Col } from 'react-bootstrap'
+import { useState } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
 
 import GenrePieChart from '../components/GenrePieChart'
-import TimeRangeRadio from '../components/TimeRangeRadio'
 import Spinner from '../components/Spinner'
-
-import { TimeRangeType } from '../types'
-import { getGenreChartData } from '../utils/getGenreChartData'
-import { getAllGenres } from '../utils/getAllGenres'
-import { getGenreFrequency } from '../utils/getGenreFrequency'
+import TimeRangeRadio from '../components/TimeRangeRadio'
 import useUserTopArtists from '../hooks/useUserTopArtists'
+import { GenreObject, TimeRangeType } from '../types'
+import { getAllGenres } from '../utils/getAllGenres'
+import { getGenreChartData } from '../utils/getGenreChartData'
+import { getGenreFrequency } from '../utils/getGenreFrequency'
 
-interface GenreObjectProps {
-  genre: string
-  artists: string[]
-}
-
-const Genres = () => {
+export default function Genres(): JSX.Element {
   const router = useRouter()
   const { status } = useSession({
     required: true,
@@ -29,7 +23,7 @@ const Genres = () => {
 
   const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
 
-  let genreChartData: GenreObjectProps[] = []
+  let genreChartData: GenreObject[] = []
 
   const topArtistsQuery = useUserTopArtists(timeRange, 50)
   let topArtists: SpotifyApi.ArtistObjectFull[] = []
@@ -87,5 +81,3 @@ const Genres = () => {
     </main>
   )
 }
-
-export default Genres

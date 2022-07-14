@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import useUserPlaylists from '../hooks/useUserPlaylists'
 
-const Playlists = (): JSX.Element => {
+export default function Playlists(): JSX.Element {
   const router = useRouter()
   const { status } = useSession({
     required: true,
@@ -35,7 +35,7 @@ const Playlists = (): JSX.Element => {
               {userPlaylists.map((playlist: SpotifyApi.PlaylistObjectSimplified) => {
                 return (
                   <div key={playlist.id} className="mb-5">
-                    {/* {playlist.images[0].url && (
+                    {playlist.images?.length > 0 && (
                       <Image
                         src={playlist.images[0].url}
                         alt="profile picture"
@@ -43,7 +43,7 @@ const Playlists = (): JSX.Element => {
                         width={224}
                         className="img-playlist-cover"
                       />
-                    )} */}
+                    )}
 
                     <a
                       href={playlist.external_urls.spotify}
@@ -66,5 +66,3 @@ const Playlists = (): JSX.Element => {
     </main>
   )
 }
-
-export default Playlists

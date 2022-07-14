@@ -1,14 +1,13 @@
 import Link from 'next/link'
-import { Container, Navbar, Nav } from 'react-bootstrap'
+import { Nav, Navbar } from 'react-bootstrap'
 import {
-  BsPersonFill,
-  BsMusicNoteBeamed,
-  BsFillClockFill,
-  BsMusicNoteList,
-  BsSpotify,
+  BsMusicNoteBeamed, BsPersonFill,
+  // BsFillClockFill,
+  // BsMusicNoteList,
+  BsSpotify
 } from 'react-icons/bs'
-import { MdHistory, MdOutlineQueueMusic } from 'react-icons/md'
 import { GiMicrophone } from 'react-icons/gi'
+import { MdHistory, MdOutlineQueueMusic } from 'react-icons/md'
 
 const Sidebar = () => {
   return (

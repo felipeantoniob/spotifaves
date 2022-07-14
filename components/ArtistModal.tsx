@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Col, Modal, Row } from 'react-bootstrap'
+
 import { ArtistModalProps } from '../types/index'
 
 const ArtistModal = ({

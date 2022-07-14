@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query'
-
 import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
 
 /**
@@ -14,10 +13,13 @@ const fetchArtistTopTracks = async (artist: SpotifyApi.ArtistObjectFull, country
   }
   return response
 }
-
 export default function useArtistTopTracks(artist: SpotifyApi.ArtistObjectFull, country: string) {
-  return useQuery(['userTopTracks', artist, country], () => fetchArtistTopTracks(artist, country))
-  // return useQuery<TopTracksResponseObject, Error>(['topTracks', timeRange, limit], () =>
-  //   fetchTopTracks(timeRange, limit)
-  // )
+  return useQuery(
+    ['artistTopTracks', artist, country],
+    () => fetchArtistTopTracks(artist, country),
+    {
+      refetchOnWindowFocus: false,
+      enabled: false, // disable this query from automatically running
+    }
+  )
 }

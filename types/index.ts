@@ -22,6 +22,11 @@ export interface CreatedPlaylistModalProps {
 export interface TrackModalProps {
   show: boolean
   handleClose: () => void
-  selectedTrack: SpotifyApi.TrackObjectFull | undefined
+  track: SpotifyApi.TrackObjectFull | undefined
   audioFeatures: SpotifyApi.AudioFeaturesObject | undefined
+}
+
+export interface GenreObject {
+  genre: string
+  artists: string[]
 }

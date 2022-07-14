@@ -1,30 +1,29 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { Container, Row, Col } from 'react-bootstrap'
-
-import TrackModal from './TrackModal'
-import { msToMinutesAndSeconds } from '../utils/msToMinutesAndSeconds'
-import { getAudioFeaturesForTrack } from '../spotify'
-
+import { Col, Row } from 'react-bootstrap'
 import { MdInfo } from 'react-icons/md'
 
-const Track = ({ ...track }): JSX.Element => {
-  const { data: session, status } = useSession()
-  const loading = status === 'loading'
+import useAudioFeatures from '../hooks/useAudioFeatures'
 
-  const [show, setShow] = useState(false)
-  const [selectedTrack, setSelectedTrack] = useState<SpotifyApi.TrackObjectFull>()
-  const [audioFeatures, setAudioFeatures] = useState<SpotifyApi.AudioFeaturesObject>()
+import { msToMinutesAndSeconds } from '../utils/msToMinutesAndSeconds'
 
-  const handleClose = (): void => setShow(false)
-  const handleShow = (): void => setShow(true)
+import TrackModal from './TrackModal'
+
+const Track = ({ ...track }: SpotifyApi.TrackObjectFull): JSX.Element => {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleCloseModal = (): void => setShowModal(false)
+  const handleShowModal = (): void => setShowModal(true)
+
+  const audioFeaturesQuery = useAudioFeatures(track.id)
+  let audioFeatures: SpotifyApi.AudioFeaturesObject = {} as SpotifyApi.AudioFeaturesObject
+  if (audioFeaturesQuery.isSuccess) {
+    audioFeatures = audioFeaturesQuery.data.body
+  }
 
   const handleClick = async () => {
-    setSelectedTrack({ ...(track as SpotifyApi.TrackObjectFull) })
-    const audioFeatures = await getAudioFeaturesForTrack(track.id)
-    setAudioFeatures(audioFeatures)
-    handleShow()
+    await audioFeaturesQuery.refetch()
+    handleShowModal()
   }
 
   return (
@@ -42,7 +41,6 @@ const Track = ({ ...track }): JSX.Element => {
             width={50}
             layout="intrinsic"
             onClick={handleClick}
-            // className="position-absolute left-0 top-0"
           />
           <div className="position-absolute top-50 start-50 translate-middle text-light info-icon">
             <MdInfo size="2rem" />
@@ -70,14 +68,12 @@ const Track = ({ ...track }): JSX.Element => {
           </div>
         </Col>
       </Row>
-      {selectedTrack && (
-        <TrackModal
-          audioFeatures={audioFeatures}
-          handleClose={handleClose}
-          selectedTrack={selectedTrack}
-          show={show}
-        />
-      )}
+      <TrackModal
+        audioFeatures={audioFeatures}
+        handleClose={handleCloseModal}
+        track={track}
+        show={showModal}
+      />
     </>
   )
 }

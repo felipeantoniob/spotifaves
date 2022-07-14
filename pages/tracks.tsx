@@ -8,13 +8,18 @@ import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
 import Spinner from '../components/Spinner'
 import TimeRangeRadio from '../components/TimeRangeRadio'
 import Track from '../components/Track'
+
+import useAddTracksToPlaylist from '../hooks/useAddTracksToPlaylist'
+import useCreatePlaylist from '../hooks/useCreatePlaylist'
+import usePlaylist from '../hooks/usePlaylist'
 import useUserTopTracks from '../hooks/useUserTopTracks'
-import { addTracksToPlaylist, createNewPlaylist, getPlaylistDetails } from '../spotify'
+
 import { TimeRangeType } from '../types'
+
 import { showFooterOnScroll } from '../utils/showFooterOnScroll'
 import { timeRangeDescription } from '../utils/timeRangeDescription'
 
-const Tracks = (): JSX.Element => {
+export default function Tracks(): JSX.Element {
   const router = useRouter()
   const { status } = useSession({
     required: true,
@@ -26,10 +31,15 @@ const Tracks = (): JSX.Element => {
   const [showModal, setShowModal] = useState(false)
   const [showFooter, setShowFooter] = useState(false)
   const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
-  const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
+  const [playlistId, setPlaylistId] = useState('')
 
+  const playlistQuery = usePlaylist(playlistId)
   const topTracksQuery = useUserTopTracks(timeRange, 50)
+  const createPlaylist = useCreatePlaylist()
+  const addTracksToPlaylist = useAddTracksToPlaylist()
+
   let topTracks: SpotifyApi.TrackObjectFull[] = []
+  let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
 
   if (topTracksQuery.isError) {
     signOut()
@@ -40,6 +50,10 @@ const Tracks = (): JSX.Element => {
     topTracks = topTracksQuery.data!.body.items
   }
 
+  if (playlistQuery.isSuccess) {
+    playlist = playlistQuery.data.body
+  }
+
   useEffect(() => {
     showFooterOnScroll(setShowFooter)
   }, [])
@@ -48,16 +62,20 @@ const Tracks = (): JSX.Element => {
   const handleShowModal = (): void => setShowModal(true)
 
   const handleCreatePlaylist = async () => {
-    try {
-      const playlistId = await createNewPlaylist(`Top Tracks ${timeRangeDescription(timeRange)}`)
-      await addTracksToPlaylist(playlistId!, topTracks!)
-      const playlistDetails = await getPlaylistDetails(playlistId!)
-      setPlaylistDetails(playlistDetails)
-
-      handleShowModal()
-    } catch (err) {
-      console.log(err)
-    }
+    createPlaylist.mutate(`Top Tracks ${timeRangeDescription(timeRange)}`, {
+      onSuccess: async (data) => {
+        setPlaylistId(data)
+        addTracksToPlaylist.mutate(
+          { playlistId: data, tracks: topTracks },
+          {
+            onSuccess: async (data) => {
+              playlistQuery.refetch()
+              handleShowModal()
+            },
+          }
+        )
+      },
+    })
   }
 
   return (
@@ -100,16 +118,14 @@ const Tracks = (): JSX.Element => {
           </Container>
         )}
 
-        {playlistDetails && (
+        {playlist.images?.length > 0 && (
           <CreatedPlaylistModal
             show={showModal}
             handleClose={handleCloseModal}
-            playlistDetails={playlistDetails}
+            playlistDetails={playlist}
           />
         )}
       </Container>
     </main>
   )
 }
-
-export default Tracks

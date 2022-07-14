@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query'
-
 import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
 
 /**
@@ -16,6 +15,5 @@ const fetchUserInfo = async () => {
 }
 
 export default function useUserInfo() {
-  //   return useQuery<MovieResponseObject, Error>(['movies', endpoint, pageOffset], () =>
   return useQuery('userInfo', () => fetchUserInfo())
 }

@@ -1,15 +1,15 @@
 import Link from 'next/link'
-import { Container, Navbar, Nav } from 'react-bootstrap'
+import { Container, Nav, Navbar } from 'react-bootstrap'
 import {
-  BsPersonFill,
-  BsMusicNoteBeamed,
+  BsMusicNoteBeamed, BsPersonFill,
   BsFillClockFill,
   BsMusicNoteList,
-  BsSpotify,
+  BsSpotify
 } from 'react-icons/bs'
-import { MdHistory, MdOutlineQueueMusic } from 'react-icons/md'
-import { GiMicrophone } from 'react-icons/gi'
+import { MdHistory } from 'react-icons/md'
+import { MdOutlineQueueMusic } from 'react-icons/md'
 import { FiPieChart } from 'react-icons/fi'
+import { GiMicrophone } from 'react-icons/gi'
 
 const Header = (): JSX.Element => {
   return (

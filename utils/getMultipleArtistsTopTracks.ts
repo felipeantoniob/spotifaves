@@ -1,4 +1,4 @@
-import { getArtistTopTracks } from './../spotify/index'
+import { getArtistTopTracks } from './getArtistTopTracks'
 
 export const getMultipleArtistsTopTracks = async (
   artists: SpotifyApi.ArtistObjectFull[],

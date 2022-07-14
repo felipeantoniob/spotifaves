@@ -14,6 +14,7 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
   return (
     <>
       <Head>
+        <title>Spotifaves</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -23,7 +24,6 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
         {/* <link rel="shortcut icon" href="/favicons/favicon.ico" /> */}
         <link rel="icon" href="favicons/favicon.ico" />
 
-        <title>Spotify App</title>
         <meta name="description" content="A web app for visualizing personalized Spotify data" />
         <meta property="og:title" content="Spotify App" />
         <meta property="og:type" content="website" />

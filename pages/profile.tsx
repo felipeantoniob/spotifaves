@@ -5,14 +5,14 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 
-// import PlaylistForm from '../components/PlaylistForm'
 // import Sidebar from '../components/Sidebar'
 import Spinner from '../components/Spinner'
+
 import useUserFollowedArtists from '../hooks/useUserFollowedArtists'
-import useUserTopArtists from '../hooks/useUserTopArtists'
-import useUserTopTracks from '../hooks/useUserTopTracks'
 import useUserInfo from '../hooks/useUserInfo'
 import useUserPlaylists from '../hooks/useUserPlaylists'
+import useUserTopArtists from '../hooks/useUserTopArtists'
+import useUserTopTracks from '../hooks/useUserTopTracks'
 
 export default function Home(): JSX.Element {
   const router = useRouter()
@@ -45,22 +45,6 @@ export default function Home(): JSX.Element {
   const userTopTracksQuery = useUserTopTracks('long_term', 10)
   const userTopArtistsQuery = useUserTopArtists('long_term', 10)
 
-  if (userInfoQuery.isSuccess) {
-    userInfo = userInfoQuery.data!.body
-  }
-  if (followedArtistsQuery.isSuccess) {
-    followedArtists = followedArtistsQuery.data!.body
-  }
-  if (userPlaylistsQuery.isSuccess) {
-    userPlaylists = userPlaylistsQuery.data!.body
-  }
-  if (userTopTracksQuery.isSuccess) {
-    userTopTracks = userTopTracksQuery.data!.body.items
-  }
-  if (userTopArtistsQuery.isSuccess) {
-    userTopArtists = userTopArtistsQuery.data!.body.items
-  }
-
   if (
     userInfoQuery.isLoading ||
     userTopTracksQuery.isLoading ||
@@ -84,6 +68,12 @@ export default function Home(): JSX.Element {
     signOut()
     router.push('/')
   }
+
+  userInfo = userInfoQuery.data!.body
+  followedArtists = followedArtistsQuery.data!.body
+  userPlaylists = userPlaylistsQuery.data!.body
+  userTopTracks = userTopTracksQuery.data!.body.items
+  userTopArtists = userTopArtistsQuery.data!.body.items
 
   return (
     <div>
@@ -128,7 +118,6 @@ export default function Home(): JSX.Element {
               </Row>
             </div>
           </Row>
-
           <div>
             <Row>
               <Col className="text-center pt-5">

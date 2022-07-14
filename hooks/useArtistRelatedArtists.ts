@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query'
-
 import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
 
 /**
@@ -9,14 +8,15 @@ import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
 const fetchArtistRelatedArtists = async (artistId: string) => {
   const spotifyApi = await initializeSpotifyApi()
   const response = await spotifyApi.getArtistRelatedArtists(artistId)
-
   if (response.statusCode !== 200) {
     throw new Error('Network response was not ok')
   }
-
   return response
 }
 
 export default function useArtistRelatedArtists(artistId: string) {
-  return useQuery(['artistRelatedArtists', artistId], () => fetchArtistRelatedArtists(artistId))
+  return useQuery(['artistRelatedArtists', artistId], () => fetchArtistRelatedArtists(artistId), {
+    refetchOnWindowFocus: false,
+    enabled: false, // disable this query from automatically running
+  })
 }

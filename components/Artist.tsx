@@ -1,29 +1,37 @@
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
+import useArtistRelatedArtists from '../hooks/useArtistRelatedArtists'
+import useArtistTopTracks from '../hooks/useArtistTopTracks'
+
 import ArtistModal from './ArtistModal'
-import { getArtistTopTracks, getArtistRelatedArtists } from '../spotify'
 
 const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
-  const { data: session, status } = useSession()
-  const loading = status === 'loading'
+  const [showModal, setShowModal] = useState(false)
 
-  const [show, setShow] = useState(false)
-  const [selectedArtist, setSelectedArtist] = useState<SpotifyApi.ArtistObjectFull>()
-  const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>()
-  const [relatedArtists, setRelatedArtists] = useState<SpotifyApi.ArtistObjectFull[]>()
+  const handleCloseModal = (): void => setShowModal(false)
+  const handleShowModal = (): void => setShowModal(true)
 
-  const handleClose = (): void => setShow(false)
-  const handleShow = (): void => setShow(true)
+  const artistTopTracksQuery = useArtistTopTracks(artist, 'US')
+  const artistRelatedArtistsQuery = useArtistRelatedArtists(artist.id)
+  let artistTopTracks: SpotifyApi.TrackObjectFull[] = []
+  let artistRelatedArtists: SpotifyApi.ArtistObjectFull[] = []
+
+  if (artistTopTracksQuery.isSuccess) {
+    artistTopTracks = artistTopTracksQuery.data.body.tracks
+  }
+  if (artistRelatedArtistsQuery.isSuccess) {
+    artistRelatedArtists = artistRelatedArtistsQuery.data.body.artists
+  }
+
+  if (artistTopTracksQuery.isLoading || artistRelatedArtistsQuery.isLoading) {
+    // return <div>Loading...</div>
+  }
 
   const handleClick = async () => {
-    setSelectedArtist({ ...(artist as SpotifyApi.ArtistObjectFull) })
-    const artistTopTracks = await getArtistTopTracks(artist, 'US')
-    setTopTracks(artistTopTracks)
-    const artistRelatedArtists = await getArtistRelatedArtists(artist.id)
-    setRelatedArtists(artistRelatedArtists)
-    handleShow()
+    await artistTopTracksQuery.refetch()
+    await artistRelatedArtistsQuery.refetch()
+    handleShowModal()
   }
 
   return (
@@ -45,15 +53,13 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
       >
         {artist.name}
       </a>
-      {selectedArtist && (
-        <ArtistModal
-          handleClose={handleClose}
-          relatedArtists={relatedArtists}
-          selectedArtist={selectedArtist}
-          show={show}
-          topTracks={topTracks}
-        />
-      )}
+      <ArtistModal
+        handleClose={handleCloseModal}
+        relatedArtists={artistRelatedArtists}
+        selectedArtist={artist}
+        show={showModal}
+        topTracks={artistTopTracks}
+      />
     </div>
   )
 }

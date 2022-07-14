@@ -8,10 +8,11 @@ const CreatedPlaylistModal = ({
   handleClose,
   playlistDetails,
 }: CreatedPlaylistModalProps) => {
+  // console.log('playlist modal details:')
+  // console.log(playlistDetails)
   return (
     <Modal show={show} onHide={handleClose} centered className="high-emphasis-text">
       <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>
-
       <Modal.Body className="text-center px-5">
         <h3 className="fw-bold">Success!</h3>
         <p className="fw-light">Your new Playlist is now available on Spotify.</p>

@@ -1,7 +1,7 @@
-import { Button, Col, Row } from 'react-bootstrap'
 import { signIn } from 'next-auth/react'
+import { Button, Col, Row } from 'react-bootstrap'
 
-const Login = (): JSX.Element => {
+export default function Login(): JSX.Element {
   return (
     <main>
       <Row className="align-items-center vh-100 vw-100">
@@ -18,5 +18,3 @@ const Login = (): JSX.Element => {
     </main>
   )
 }
-
-export default Login

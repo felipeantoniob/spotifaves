@@ -1,7 +1,7 @@
 import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
-// import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import Layout from '../components/Layout'
 import '../styles/main.scss'
@@ -17,6 +17,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppProps): J
             <Component {...pageProps} />
           </Layout>
         </SessionProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   )

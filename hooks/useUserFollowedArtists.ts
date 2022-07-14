@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query'
-
 import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
 
 /**
@@ -16,5 +15,5 @@ const fetchUserFollowedArtists = async (limit?: number) => {
 }
 
 export default function useUserFollowedArtists(limit?: number) {
-  return useQuery('followedArtists', () => fetchUserFollowedArtists(limit))
+  return useQuery('userFollowedArtists', () => fetchUserFollowedArtists(limit))
 }
