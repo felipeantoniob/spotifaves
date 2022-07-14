@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.

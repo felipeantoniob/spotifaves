@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community's listening history
@@ -17,6 +17,6 @@ const fetchArtistRelatedArtists = async (artistId: string) => {
 export default function useArtistRelatedArtists(artistId: string) {
   return useQuery(['artistRelatedArtists', artistId], () => fetchArtistRelatedArtists(artistId), {
     refetchOnWindowFocus: false,
-    enabled: false, // disable this query from automatically running
+    enabled: false,
   })
 }

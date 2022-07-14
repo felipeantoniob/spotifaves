@@ -6,7 +6,7 @@ export interface TimeRangeRadioProps {
 }
 
 export interface ArtistModalProps {
-  show: boolean
+  isModalShowing: boolean
   handleClose: () => void
   selectedArtist: SpotifyApi.ArtistObjectFull | undefined
   relatedArtists: SpotifyApi.ArtistObjectFull[] | undefined
@@ -20,7 +20,7 @@ export interface CreatedPlaylistModalProps {
 }
 
 export interface TrackModalProps {
-  show: boolean
+  isModalShowing: boolean
   handleClose: () => void
   track: SpotifyApi.TrackObjectFull | undefined
   audioFeatures: SpotifyApi.AudioFeaturesObject | undefined
@@ -30,3 +30,4 @@ export interface GenreObject {
   genre: string
   artists: string[]
 }
+

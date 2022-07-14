@@ -1,6 +1,6 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 
 import Artist from '../components/Artist'
@@ -9,17 +9,20 @@ import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
 import Spinner from '../components/Spinner'
 import TimeRangeRadio from '../components/TimeRangeRadio'
 
-import useAddTracksToPlaylist from '../hooks/useAddTracksToPlaylist'
-import useCreatePlaylist from '../hooks/useCreatePlaylist'
-import usePlaylist from '../hooks/usePlaylist'
-import useUserTopArtists from '../hooks/useUserTopArtists'
+import useAddTracksToPlaylist from '../hooks/spotify/useAddTracksToPlaylist'
+import useCreatePlaylist from '../hooks/spotify/useCreatePlaylist'
+import usePlaylist from '../hooks/spotify/usePlaylist'
+import useUserTopArtists from '../hooks/spotify/useUserTopArtists'
+import useFooterOnScroll from '../hooks/useFooterOnScroll'
+import useModal from '../hooks/useModal'
 
 import { TimeRangeType } from '../types'
-
 import { getMultipleArtistsTopTracks } from '../utils/getMultipleArtistsTopTracks'
-import { showFooterOnScroll } from '../utils/showFooterOnScroll'
 import { shuffleTracks } from '../utils/shuffleTracks'
 import { timeRangeDescription } from '../utils/timeRangeDescription'
+
+let topArtists: SpotifyApi.ArtistObjectFull[] = []
+let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
 
 export default function Artists(): JSX.Element {
   const router = useRouter()
@@ -30,40 +33,15 @@ export default function Artists(): JSX.Element {
     },
   })
 
-  const { data: session } = useSession()
-
-  const [showModal, setShowModal] = useState(false)
-  const [showFooter, setShowFooter] = useState(false)
   const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
-  const [playlistDetails, setPlaylistDetails] = useState<SpotifyApi.SinglePlaylistResponse>()
-
-  const topArtistsQuery = useUserTopArtists(timeRange, 50)
-  let topArtists: SpotifyApi.ArtistObjectFull[] = []
-
   const [playlistId, setPlaylistId] = useState('')
+
+  const { showFooter } = useFooterOnScroll()
+  const { isModalShowing, toggleModal } = useModal()
+  const topArtistsQuery = useUserTopArtists(timeRange, 50)
   const playlistQuery = usePlaylist(playlistId)
   const createPlaylist = useCreatePlaylist()
   const addTracksToPlaylist = useAddTracksToPlaylist()
-  let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
-
-  if (topArtistsQuery.isError) {
-    signOut()
-    router.push('/')
-  }
-  if (topArtistsQuery.isSuccess) {
-    topArtists = topArtistsQuery.data!.body.items
-  }
-
-  if (playlistQuery.isSuccess) {
-    playlist = playlistQuery.data.body
-  }
-
-  useEffect(() => {
-    showFooterOnScroll(setShowFooter)
-  }, [])
-
-  const handleCloseModal = (): void => setShowModal(false)
-  const handleShowModal = (): void => setShowModal(true)
 
   const handleCreatePlaylist = async () => {
     const topArtistTopTracks = await getMultipleArtistsTopTracks(topArtists!, 20, 5)
@@ -75,12 +53,24 @@ export default function Artists(): JSX.Element {
           {
             onSuccess: async (data) => {
               playlistQuery.refetch()
-              handleShowModal()
+              toggleModal()
             },
           }
         )
       },
     })
+  }
+
+  if (topArtistsQuery.isError) {
+    signOut()
+    router.push('/')
+  }
+  if (topArtistsQuery.isSuccess) {
+    topArtists = topArtistsQuery.data!.body.items
+  }
+
+  if (playlistQuery.isSuccess) {
+    playlist = playlistQuery.data.body
   }
 
   return (
@@ -108,7 +98,6 @@ export default function Artists(): JSX.Element {
         )}
 
         {showFooter && (
-          // <Container fluid className="playlist-footer fixed-bottom  border-top border-dark">
           <Container
             fluid
             className={`${
@@ -123,17 +112,11 @@ export default function Artists(): JSX.Element {
             />
           </Container>
         )}
-        {/* {playlistDetails && (
-          <CreatedPlaylistModal
-            show={showModal}
-            handleClose={handleCloseModal}
-            playlistDetails={playlistDetails}
-          />
-        )} */}
+
         {playlist.images?.length > 0 && (
           <CreatedPlaylistModal
-            show={showModal}
-            handleClose={handleCloseModal}
+            show={isModalShowing}
+            handleClose={toggleModal}
             playlistDetails={playlist}
           />
         )}

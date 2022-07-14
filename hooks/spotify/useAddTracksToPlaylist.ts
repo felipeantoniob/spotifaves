@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
-type MutationVariables = {
+interface addTracksToPlaylistProps {
   playlistId: string
   tracks: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.TrackObjectFull[]
 }
@@ -10,7 +10,7 @@ type MutationVariables = {
  * Add one or more items to a user's playlist
  * https://developer.spotify.com/documentation/web-api/reference/#/operations/add-tracks-to-playlist/
  */
-const addTracksToPlaylist = async ({ playlistId, tracks }: MutationVariables) => {
+const addTracksToPlaylist = async ({ playlistId, tracks }: addTracksToPlaylistProps) => {
   const spotifyApi = await initializeSpotifyApi()
   await spotifyApi.addTracksToPlaylist(
     playlistId,

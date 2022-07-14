@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
-import { TimeRangeType } from '../types'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { TimeRangeType } from '../../types'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get a User's Top Tracks

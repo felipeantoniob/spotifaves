@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get audio feature information for a single track identified by its unique Spotify ID
@@ -16,6 +16,6 @@ const fetchAudioFeatures = async (trackId: string) => {
 export default function useAudioFeatures(trackId: string) {
   return useQuery(['audioFeatures', trackId], () => fetchAudioFeatures(trackId), {
     refetchOnWindowFocus: false,
-    enabled: false, // disable this query from automatically running
+    enabled: false,
   })
 }

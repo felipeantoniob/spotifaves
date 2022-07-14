@@ -1,6 +1,6 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 
 import CreatedPlaylistModal from '../components/CreatedPlaylistModal'
@@ -9,15 +9,18 @@ import Spinner from '../components/Spinner'
 import TimeRangeRadio from '../components/TimeRangeRadio'
 import Track from '../components/Track'
 
-import useAddTracksToPlaylist from '../hooks/useAddTracksToPlaylist'
-import useCreatePlaylist from '../hooks/useCreatePlaylist'
-import usePlaylist from '../hooks/usePlaylist'
-import useUserTopTracks from '../hooks/useUserTopTracks'
+import useAddTracksToPlaylist from '../hooks/spotify/useAddTracksToPlaylist'
+import useCreatePlaylist from '../hooks/spotify/useCreatePlaylist'
+import usePlaylist from '../hooks/spotify/usePlaylist'
+import useUserTopTracks from '../hooks/spotify/useUserTopTracks'
+import useFooterOnScroll from '../hooks/useFooterOnScroll'
+import useModal from '../hooks/useModal'
 
 import { TimeRangeType } from '../types'
-
-import { showFooterOnScroll } from '../utils/showFooterOnScroll'
 import { timeRangeDescription } from '../utils/timeRangeDescription'
+
+let topTracks: SpotifyApi.TrackObjectFull[] = []
+let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
 
 export default function Tracks(): JSX.Element {
   const router = useRouter()
@@ -28,18 +31,32 @@ export default function Tracks(): JSX.Element {
     },
   })
 
-  const [showModal, setShowModal] = useState(false)
-  const [showFooter, setShowFooter] = useState(false)
   const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
   const [playlistId, setPlaylistId] = useState('')
 
+  const { showFooter } = useFooterOnScroll()
+  const { isModalShowing, toggleModal } = useModal()
   const playlistQuery = usePlaylist(playlistId)
   const topTracksQuery = useUserTopTracks(timeRange, 50)
   const createPlaylist = useCreatePlaylist()
   const addTracksToPlaylist = useAddTracksToPlaylist()
 
-  let topTracks: SpotifyApi.TrackObjectFull[] = []
-  let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
+  const handleCreatePlaylist = async () => {
+    createPlaylist.mutate(`Top Tracks ${timeRangeDescription(timeRange)}`, {
+      onSuccess: async (data) => {
+        setPlaylistId(data)
+        addTracksToPlaylist.mutate(
+          { playlistId: data, tracks: topTracks },
+          {
+            onSuccess: async (data) => {
+              playlistQuery.refetch()
+              toggleModal()
+            },
+          }
+        )
+      },
+    })
+  }
 
   if (topTracksQuery.isError) {
     signOut()
@@ -52,30 +69,6 @@ export default function Tracks(): JSX.Element {
 
   if (playlistQuery.isSuccess) {
     playlist = playlistQuery.data.body
-  }
-
-  useEffect(() => {
-    showFooterOnScroll(setShowFooter)
-  }, [])
-
-  const handleCloseModal = (): void => setShowModal(false)
-  const handleShowModal = (): void => setShowModal(true)
-
-  const handleCreatePlaylist = async () => {
-    createPlaylist.mutate(`Top Tracks ${timeRangeDescription(timeRange)}`, {
-      onSuccess: async (data) => {
-        setPlaylistId(data)
-        addTracksToPlaylist.mutate(
-          { playlistId: data, tracks: topTracks },
-          {
-            onSuccess: async (data) => {
-              playlistQuery.refetch()
-              handleShowModal()
-            },
-          }
-        )
-      },
-    })
   }
 
   return (
@@ -103,7 +96,6 @@ export default function Tracks(): JSX.Element {
         )}
 
         {showFooter && (
-          // <Container fluid className="playlist-footer fixed-bottom  border-top border-dark">
           <Container
             fluid
             className={`${
@@ -120,8 +112,8 @@ export default function Tracks(): JSX.Element {
 
         {playlist.images?.length > 0 && (
           <CreatedPlaylistModal
-            show={showModal}
-            handleClose={handleCloseModal}
+            show={isModalShowing}
+            handleClose={toggleModal}
             playlistDetails={playlist}
           />
         )}

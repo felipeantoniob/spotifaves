@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get a List of Current User's Playlists

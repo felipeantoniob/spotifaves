@@ -8,11 +8,19 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 // import Sidebar from '../components/Sidebar'
 import Spinner from '../components/Spinner'
 
-import useUserFollowedArtists from '../hooks/useUserFollowedArtists'
-import useUserInfo from '../hooks/useUserInfo'
-import useUserPlaylists from '../hooks/useUserPlaylists'
-import useUserTopArtists from '../hooks/useUserTopArtists'
-import useUserTopTracks from '../hooks/useUserTopTracks'
+import useUserFollowedArtists from '../hooks/spotify/useUserFollowedArtists'
+import useUserInfo from '../hooks/spotify/useUserInfo'
+import useUserPlaylists from '../hooks/spotify/useUserPlaylists'
+import useUserTopArtists from '../hooks/spotify/useUserTopArtists'
+import useUserTopTracks from '../hooks/spotify/useUserTopTracks'
+
+let userInfo: SpotifyApi.CurrentUsersProfileResponse
+let followedArtists: SpotifyApi.UsersFollowedArtistsResponse =
+  {} as SpotifyApi.UsersFollowedArtistsResponse
+let userPlaylists: SpotifyApi.ListOfUsersPlaylistsResponse =
+  {} as SpotifyApi.ListOfUsersPlaylistsResponse
+let userTopTracks: SpotifyApi.TrackObjectFull[] = []
+let userTopArtists: SpotifyApi.ArtistObjectFull[] = []
 
 export default function Home(): JSX.Element {
   const router = useRouter()
@@ -30,14 +38,6 @@ export default function Home(): JSX.Element {
       signIn('spotify') // Force sign in to hopefully resolve error
     }
   }, [session])
-
-  let userInfo: SpotifyApi.CurrentUsersProfileResponse
-  let followedArtists: SpotifyApi.UsersFollowedArtistsResponse =
-    {} as SpotifyApi.UsersFollowedArtistsResponse
-  let userPlaylists: SpotifyApi.ListOfUsersPlaylistsResponse =
-    {} as SpotifyApi.ListOfUsersPlaylistsResponse
-  let userTopTracks: SpotifyApi.TrackObjectFull[] = []
-  let userTopArtists: SpotifyApi.ArtistObjectFull[] = []
 
   const userInfoQuery = useUserInfo()
   const followedArtistsQuery = useUserFollowedArtists()

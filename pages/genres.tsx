@@ -6,11 +6,16 @@ import { Col, Container, Row } from 'react-bootstrap'
 import GenrePieChart from '../components/GenrePieChart'
 import Spinner from '../components/Spinner'
 import TimeRangeRadio from '../components/TimeRangeRadio'
-import useUserTopArtists from '../hooks/useUserTopArtists'
+
+import useUserTopArtists from '../hooks/spotify/useUserTopArtists'
+
 import { GenreObject, TimeRangeType } from '../types'
 import { getAllGenres } from '../utils/getAllGenres'
 import { getGenreChartData } from '../utils/getGenreChartData'
 import { getGenreFrequency } from '../utils/getGenreFrequency'
+
+let genreChartData: GenreObject[] = []
+let topArtists: SpotifyApi.ArtistObjectFull[] = []
 
 export default function Genres(): JSX.Element {
   const router = useRouter()
@@ -23,10 +28,7 @@ export default function Genres(): JSX.Element {
 
   const [timeRange, setTimeRange] = useState<TimeRangeType>('short_term')
 
-  let genreChartData: GenreObject[] = []
-
   const topArtistsQuery = useUserTopArtists(timeRange, 50)
-  let topArtists: SpotifyApi.ArtistObjectFull[] = []
 
   if (topArtistsQuery.isError) {
     signOut()
@@ -64,7 +66,6 @@ export default function Genres(): JSX.Element {
               <Spinner />
             </div>
           )}
-
           {topArtistsQuery.isSuccess && (
             <Container fluid>
               <Row className="justify-content-center mb-5">

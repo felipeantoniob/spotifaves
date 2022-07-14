@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get a playlist owned by a Spotify user
@@ -17,7 +17,6 @@ const fetchPlaylist = async (playlistId: string) => {
 export default function usePlaylist(playlistId: string) {
   return useQuery(['playlist', playlistId], () => fetchPlaylist(playlistId), {
     refetchOnWindowFocus: false,
-    // enabled: false, // disable this query from automatically running
-    enabled: !!playlistId, // disable this query from automatically running
+    enabled: !!playlistId,
   })
 }

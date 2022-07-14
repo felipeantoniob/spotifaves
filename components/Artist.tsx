@@ -1,16 +1,13 @@
 import Image from 'next/image'
-import { useState } from 'react'
 
-import useArtistRelatedArtists from '../hooks/useArtistRelatedArtists'
-import useArtistTopTracks from '../hooks/useArtistTopTracks'
+import useArtistRelatedArtists from '../hooks/spotify/useArtistRelatedArtists'
+import useArtistTopTracks from '../hooks/spotify/useArtistTopTracks'
+import useModal from '../hooks/useModal'
 
 import ArtistModal from './ArtistModal'
 
 const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
-  const [showModal, setShowModal] = useState(false)
-
-  const handleCloseModal = (): void => setShowModal(false)
-  const handleShowModal = (): void => setShowModal(true)
+  const { isModalShowing, toggleModal } = useModal()
 
   const artistTopTracksQuery = useArtistTopTracks(artist, 'US')
   const artistRelatedArtistsQuery = useArtistRelatedArtists(artist.id)
@@ -31,7 +28,7 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
   const handleClick = async () => {
     await artistTopTracksQuery.refetch()
     await artistRelatedArtistsQuery.refetch()
-    handleShowModal()
+    toggleModal()
   }
 
   return (
@@ -54,10 +51,10 @@ const Artist = ({ ...artist }: SpotifyApi.ArtistObjectFull): JSX.Element => {
         {artist.name}
       </a>
       <ArtistModal
-        handleClose={handleCloseModal}
+        handleClose={toggleModal}
         relatedArtists={artistRelatedArtists}
         selectedArtist={artist}
-        show={showModal}
+        isModalShowing={isModalShowing}
         topTracks={artistTopTracks}
       />
     </div>

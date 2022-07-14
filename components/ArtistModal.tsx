@@ -7,11 +7,11 @@ const ArtistModal = ({
   handleClose,
   relatedArtists,
   selectedArtist,
-  show,
+  isModalShowing,
   topTracks,
 }: ArtistModalProps): JSX.Element => {
   return (
-    <Modal show={show} onHide={handleClose} size="xl" centered>
+    <Modal show={isModalShowing} onHide={handleClose} size="xl" centered>
       <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>
       <Modal.Body className="text-center">
         <Image

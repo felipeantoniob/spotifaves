@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query'
-import { TimeRangeType } from '../types'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { TimeRangeType } from '../../types'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
+
 
 /**
  * Get a User's Top Artists
@@ -13,7 +14,6 @@ const fetchUserTopArtists = async (timeRange: TimeRangeType, limit: number) => {
     throw new Error('Network response was not ok')
   }
   return response
-
 }
 
 export default function useUserTopArtists(timeRange: TimeRangeType, limit: number) {

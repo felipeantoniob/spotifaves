@@ -1,7 +1,11 @@
 import dayjs from 'dayjs'
 import { useMutation } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
+/**
+ * Create a playlist for a Spotify user (The playlist will be empty until you add tracks)
+ * https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist/
+ */
 const createPlaylist = async (playlistName: string) => {
   const spotifyApi = await initializeSpotifyApi()
   const data = await spotifyApi.createPlaylist(
@@ -15,10 +19,6 @@ const createPlaylist = async (playlistName: string) => {
   return playlistId
 }
 
-/**
- * Create a playlist for a Spotify user (The playlist will be empty until you add tracks)
- * https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist/
- */
 const useCreatePlaylist = () => useMutation(createPlaylist)
 
 export default useCreatePlaylist

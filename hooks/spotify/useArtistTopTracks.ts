@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get Spotify catalog information about an artist's top tracks by country
@@ -19,7 +19,7 @@ export default function useArtistTopTracks(artist: SpotifyApi.ArtistObjectFull, 
     () => fetchArtistTopTracks(artist, country),
     {
       refetchOnWindowFocus: false,
-      enabled: false, // disable this query from automatically running
+      enabled: false,
     }
   )
 }

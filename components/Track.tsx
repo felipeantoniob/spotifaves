@@ -1,19 +1,17 @@
 import Image from 'next/image'
-import { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { MdInfo } from 'react-icons/md'
 
-import useAudioFeatures from '../hooks/useAudioFeatures'
+import useAudioFeatures from '../hooks/spotify/useAudioFeatures'
+import useModal from '../hooks/useModal'
 
 import { msToMinutesAndSeconds } from '../utils/msToMinutesAndSeconds'
+
 
 import TrackModal from './TrackModal'
 
 const Track = ({ ...track }: SpotifyApi.TrackObjectFull): JSX.Element => {
-  const [showModal, setShowModal] = useState(false)
-
-  const handleCloseModal = (): void => setShowModal(false)
-  const handleShowModal = (): void => setShowModal(true)
+  const { isModalShowing, toggleModal } = useModal()
 
   const audioFeaturesQuery = useAudioFeatures(track.id)
   let audioFeatures: SpotifyApi.AudioFeaturesObject = {} as SpotifyApi.AudioFeaturesObject
@@ -23,7 +21,7 @@ const Track = ({ ...track }: SpotifyApi.TrackObjectFull): JSX.Element => {
 
   const handleClick = async () => {
     await audioFeaturesQuery.refetch()
-    handleShowModal()
+    toggleModal()
   }
 
   return (
@@ -70,9 +68,9 @@ const Track = ({ ...track }: SpotifyApi.TrackObjectFull): JSX.Element => {
       </Row>
       <TrackModal
         audioFeatures={audioFeatures}
-        handleClose={handleCloseModal}
+        handleClose={toggleModal}
         track={track}
-        show={showModal}
+        isModalShowing={isModalShowing}
       />
     </>
   )

@@ -1,18 +1,21 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Container, Row } from 'react-bootstrap'
 
 import CreatedPlaylistModal from '../components/CreatedPlaylistModal'
 import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
 import Track from '../components/Track'
 
-import useAddTracksToPlaylist from '../hooks/useAddTracksToPlaylist'
-import useCreatePlaylist from '../hooks/useCreatePlaylist'
-import usePlaylist from '../hooks/usePlaylist'
-import useUserRecentTracks from '../hooks/useUserRecentTracks'
+import useAddTracksToPlaylist from '../hooks/spotify/useAddTracksToPlaylist'
+import useCreatePlaylist from '../hooks/spotify/useCreatePlaylist'
+import usePlaylist from '../hooks/spotify/usePlaylist'
+import useUserRecentTracks from '../hooks/spotify/useUserRecentTracks'
+import useFooterOnScroll from '../hooks/useFooterOnScroll'
+import useModal from '../hooks/useModal'
 
-import { showFooterOnScroll } from '../utils/showFooterOnScroll'
+let recentTracks: SpotifyApi.TrackObjectFull[] = []
+let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
 
 export default function Recent(): JSX.Element {
   const router = useRouter()
@@ -23,17 +26,31 @@ export default function Recent(): JSX.Element {
     },
   })
 
-  const [showModal, setShowModal] = useState(false)
-  const [showFooter, setShowFooter] = useState(false)
   const [playlistId, setPlaylistId] = useState('')
 
+  const { showFooter } = useFooterOnScroll()
+  const { isModalShowing, toggleModal } = useModal()
   const recentTracksQuery = useUserRecentTracks(50)
   const playlistQuery = usePlaylist(playlistId)
   const createPlaylist = useCreatePlaylist()
   const addTracksToPlaylist = useAddTracksToPlaylist()
 
-  let recentTracks: SpotifyApi.TrackObjectFull[] = []
-  let playlist: SpotifyApi.SinglePlaylistResponse = {} as SpotifyApi.SinglePlaylistResponse
+  const handleCreatePlaylist = async () => {
+    createPlaylist.mutate('Recently Played Tracks', {
+      onSuccess: async (data) => {
+        setPlaylistId(data)
+        addTracksToPlaylist.mutate(
+          { playlistId: data, tracks: recentTracks },
+          {
+            onSuccess: async (data) => {
+              playlistQuery.refetch()
+              toggleModal()
+            },
+          }
+        )
+      },
+    })
+  }
 
   if (recentTracksQuery.isError) {
     signOut()
@@ -46,30 +63,6 @@ export default function Recent(): JSX.Element {
 
   if (playlistQuery.isSuccess) {
     playlist = playlistQuery.data.body
-  }
-
-  useEffect(() => {
-    showFooterOnScroll(setShowFooter)
-  }, [])
-
-  const handleCloseModal = (): void => setShowModal(false)
-  const handleShowModal = (): void => setShowModal(true)
-
-  const handleCreatePlaylist = async () => {
-    createPlaylist.mutate('Recently Played Tracks', {
-      onSuccess: async (data) => {
-        setPlaylistId(data)
-        addTracksToPlaylist.mutate(
-          { playlistId: data, tracks: recentTracks },
-          {
-            onSuccess: async (data) => {
-              playlistQuery.refetch()
-              handleShowModal()
-            },
-          }
-        )
-      },
-    })
   }
 
   return (
@@ -88,7 +81,6 @@ export default function Recent(): JSX.Element {
           )}
 
           {showFooter && (
-            // <Container fluid className="playlist-footer fixed-bottom  border-top border-dark">
             <Container
               fluid
               className={`${
@@ -105,8 +97,8 @@ export default function Recent(): JSX.Element {
 
           {playlist.images?.length > 0 && (
             <CreatedPlaylistModal
-              show={showModal}
-              handleClose={handleCloseModal}
+              show={isModalShowing}
+              handleClose={toggleModal}
               playlistDetails={playlist}
             />
           )}

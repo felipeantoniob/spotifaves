@@ -8,8 +8,6 @@ const CreatedPlaylistModal = ({
   handleClose,
   playlistDetails,
 }: CreatedPlaylistModalProps) => {
-  // console.log('playlist modal details:')
-  // console.log(playlistDetails)
   return (
     <Modal show={show} onHide={handleClose} centered className="high-emphasis-text">
       <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>

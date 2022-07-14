@@ -8,7 +8,7 @@ const TrackModal = ({
   audioFeatures,
   handleClose,
   track,
-  show,
+  isModalShowing,
 }: TrackModalProps): JSX.Element => {
   if (audioFeatures) {
     const tempo = audioFeatures!.tempo
@@ -16,7 +16,7 @@ const TrackModal = ({
   }
 
   return (
-    <Modal show={show} onHide={handleClose} size="xl" centered>
+    <Modal show={isModalShowing} onHide={handleClose} size="xl" centered>
       <Modal.Header closeButton closeVariant="white" className="border-0"></Modal.Header>
       <Modal.Body className="text-center">
         <Row>

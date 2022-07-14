@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { initializeSpotifyApi } from '../utils/initializeSpotifyApi'
+import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
 
 /**
  * Get Current User's Recently Played Tracks
@@ -17,6 +17,5 @@ const fetchUserRecentTracks = async (limit: number) => {
 }
 
 export default function useUserRecentTracks(limit: number) {
-  //   return useQuery<MovieResponseObject, Error>(['movies', endpoint, pageOffset], () =>
   return useQuery(['userRecentTracks', limit], () => fetchUserRecentTracks(limit))
 }
