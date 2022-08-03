@@ -1,6 +1,6 @@
 import { getGenresArtists } from './getGenresArtists'
 
-interface GenreObjectProps {
+type GenreObjectProps = {
   genre: string
   artists: string[]
 }

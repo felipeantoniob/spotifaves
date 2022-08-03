@@ -6,7 +6,7 @@ import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
  * Create a playlist for a Spotify user (The playlist will be empty until you add tracks)
  * https://developer.spotify.com/documentation/web-api/reference/#/operations/create-playlist/
  */
-const createPlaylist = async (playlistName: string) => {
+const createPlaylist = async (playlistName: string): Promise<string> => {
   const spotifyApi = await initializeSpotifyApi()
   const data = await spotifyApi.createPlaylist(
     `${playlistName} • ${dayjs().format('YYYY MMMM DD')}`,

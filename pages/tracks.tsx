@@ -16,7 +16,7 @@ import useUserTopTracks from '../hooks/spotify/useUserTopTracks'
 import useFooterOnScroll from '../hooks/useFooterOnScroll'
 import useModal from '../hooks/useModal'
 
-import { TimeRangeType } from '../types'
+import { TimeRangeType } from '../components/TimeRangeRadio'
 import { timeRangeDescription } from '../utils/timeRangeDescription'
 
 let topTracks: SpotifyApi.TrackObjectFull[] = []
@@ -64,7 +64,7 @@ export default function Tracks(): JSX.Element {
   }
 
   if (topTracksQuery.isSuccess) {
-    topTracks = topTracksQuery.data!.body.items
+    topTracks = topTracksQuery.data.body.items
   }
 
   if (playlistQuery.isSuccess) {

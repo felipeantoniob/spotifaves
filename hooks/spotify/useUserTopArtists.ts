@@ -1,13 +1,16 @@
 import { useQuery } from 'react-query'
-import { TimeRangeType } from '../../types'
+import { TimeRangeType } from '../../components/TimeRangeRadio'
+import { Response } from '../../types'
 import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
-
 
 /**
  * Get a User's Top Artists
  * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
  */
-const fetchUserTopArtists = async (timeRange: TimeRangeType, limit: number) => {
+const fetchUserTopArtists = async (
+  timeRange: TimeRangeType,
+  limit: number
+): Promise<Response<SpotifyApi.UsersTopArtistsResponse>> => {
   const spotifyApi = await initializeSpotifyApi()
   const response = await spotifyApi.getMyTopArtists({ time_range: timeRange, limit: limit })
   if (response.statusCode !== 200) {
@@ -17,5 +20,8 @@ const fetchUserTopArtists = async (timeRange: TimeRangeType, limit: number) => {
 }
 
 export default function useUserTopArtists(timeRange: TimeRangeType, limit: number) {
-  return useQuery(['userTopArtists', timeRange, limit], () => fetchUserTopArtists(timeRange, limit))
+  return useQuery<Response<SpotifyApi.UsersTopArtistsResponse>, Error>(
+    ['userTopArtists', timeRange, limit],
+    () => fetchUserTopArtists(timeRange, limit)
+  )
 }

@@ -1,7 +1,14 @@
 import Image from 'next/image'
 import { Col, Modal, Row } from 'react-bootstrap'
 
-import { ArtistModalProps } from '../types/index'
+
+type ArtistModalProps = {
+  isModalShowing: boolean
+  handleClose: () => void
+  selectedArtist: SpotifyApi.ArtistObjectFull | undefined
+  relatedArtists: SpotifyApi.ArtistObjectFull[] | undefined
+  topTracks: SpotifyApi.TrackObjectFull[] | undefined
+}
 
 const ArtistModal = ({
   handleClose,

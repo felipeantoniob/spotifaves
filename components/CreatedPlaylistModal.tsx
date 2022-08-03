@@ -1,7 +1,12 @@
 import { Button, Modal } from 'react-bootstrap'
 import Image from 'next/image'
 
-import { CreatedPlaylistModalProps } from '../types/index'
+
+ type CreatedPlaylistModalProps = {
+  show: boolean
+  handleClose: () => void
+  playlistDetails: SpotifyApi.SinglePlaylistResponse
+}
 
 const CreatedPlaylistModal = ({
   show,

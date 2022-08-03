@@ -34,7 +34,7 @@ const SPOTIFY_AUTHORIZATION_URL = `https://accounts.spotify.com/authorize?scope=
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token and an error property
  */
-async function refreshAccessToken(token: JWT) {
+async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const url =
       'https://accounts.spotify.com/api/token?' +
@@ -44,8 +44,6 @@ async function refreshAccessToken(token: JWT) {
         grant_type: 'refresh_token',
         refresh_token: token.refreshToken as string,
       })
-
-    // console.log(url)
 
     const response = await fetch(url, {
       headers: {
@@ -86,7 +84,7 @@ export default NextAuth({
     }),
   ],
   theme: {
-    colorScheme: 'dark', // "auto" | "dark" | "light"
+    colorScheme: 'dark',
     // brandColor: '', // Hex color code
     // logo: '', // Absolute URL to image
   },
@@ -100,7 +98,6 @@ export default NextAuth({
     // Note: `strategy` should be set to 'jwt' if no database is used.
     strategy: 'jwt',
     // Seconds - How long until an idle session expires and is no longer valid.
-    // maxAge: 60 * 60 * 24 * 30, // 30 days
     // maxAge: 60 * 60, // 1 hour
     maxAge: 60 * 30, // 30 minutes
     // maxAge: 60, // 1 minute
@@ -125,7 +122,7 @@ export default NextAuth({
     }) {
       // Initial sign in
       if (params.account && params.user) {
-        // console.log('Initial sign in')
+        // console.log('Initial sign in:')
         // console.log(params.token)
         return {
           accessToken: params.account.access_token,

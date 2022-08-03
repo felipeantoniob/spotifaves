@@ -1,11 +1,12 @@
 import { useQuery } from 'react-query'
 import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
+import { Response } from '../../types'
 
 /**
  * Get detailed profile information about the current user (including the current user's username)
  * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-current-users-profile/
  */
-const fetchUserInfo = async () => {
+const fetchUserInfo = async (): Promise<Response<SpotifyApi.CurrentUsersProfileResponse>> => {
   const spotifyApi = await initializeSpotifyApi()
   const response = await spotifyApi.getMe()
   if (response.statusCode !== 200) {
@@ -15,5 +16,7 @@ const fetchUserInfo = async () => {
 }
 
 export default function useUserInfo() {
-  return useQuery('userInfo', () => fetchUserInfo())
+  return useQuery<Response<SpotifyApi.CurrentUsersProfileResponse>, Error>('userInfo', () =>
+    fetchUserInfo()
+  )
 }

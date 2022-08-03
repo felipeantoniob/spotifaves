@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query'
 import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
+import { Response } from '../../types'
 
 /**
  * Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.
@@ -7,7 +8,9 @@ import { initializeSpotifyApi } from '../../utils/initializeSpotifyApi'
  * For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
  * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-recommendations/
  */
-const fetchRecommendations = async (seedArtistsIds: string[]) => {
+const fetchRecommendations = async (
+  seedArtistsIds: string[]
+): Promise<Response<SpotifyApi.RecommendationsFromSeedsResponse>> => {
   const spotifyApi = await initializeSpotifyApi()
   const response = await spotifyApi.getRecommendations({
     seed_artists: seedArtistsIds,
@@ -20,5 +23,8 @@ const fetchRecommendations = async (seedArtistsIds: string[]) => {
 }
 
 export default function useRecommendations(seedArtistsIds: string[]) {
-  return useQuery('recommendations', () => fetchRecommendations(seedArtistsIds))
+  return useQuery<Response<SpotifyApi.RecommendationsFromSeedsResponse>, Error>(
+    'recommendations',
+    () => fetchRecommendations(seedArtistsIds)
+  )
 }

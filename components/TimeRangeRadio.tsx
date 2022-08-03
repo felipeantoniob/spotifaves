@@ -1,5 +1,11 @@
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
-import { TimeRangeRadioProps } from '../types/index'
+
+export type TimeRangeType = 'long_term' | 'medium_term' | 'short_term'
+
+type TimeRangeRadioProps = {
+  timeRange: TimeRangeType
+  setTimeRange: React.Dispatch<React.SetStateAction<TimeRangeType>>
+}
 
 const TimeRangeRadio = ({ timeRange, setTimeRange }: TimeRangeRadioProps): JSX.Element => {
   const changeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {

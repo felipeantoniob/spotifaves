@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import {
-  BsMusicNoteBeamed, BsPersonFill,
+  BsMusicNoteBeamed,
+  BsPersonFill,
   BsFillClockFill,
   BsMusicNoteList,
-  BsSpotify
+  BsSpotify,
 } from 'react-icons/bs'
 import { MdHistory } from 'react-icons/md'
 import { MdOutlineQueueMusic } from 'react-icons/md'
@@ -19,7 +20,7 @@ const Header = (): JSX.Element => {
           <Navbar.Brand className="px-3">
             <Link href="/profile" passHref>
               <a>
-                <BsSpotify size="3rem" className="spotify-icon" />
+                <BsSpotify size="48px" className="spotify-icon" />
               </a>
             </Link>
           </Navbar.Brand>
@@ -29,7 +30,7 @@ const Header = (): JSX.Element => {
               <Link href="/profile" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <BsPersonFill size="1.5rem" />
+                    <BsPersonFill size="24px" />
                     Profile
                   </a>
                 </Nav.Link>
@@ -37,7 +38,7 @@ const Header = (): JSX.Element => {
               <Link href="/artists" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <GiMicrophone size="1.5rem" />
+                    <GiMicrophone size="24px" />
                     Top Artists
                   </a>
                 </Nav.Link>
@@ -45,7 +46,7 @@ const Header = (): JSX.Element => {
               <Link href="/tracks" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <BsMusicNoteBeamed size="1.5rem" />
+                    <BsMusicNoteBeamed size="24px" />
                     Top Tracks
                   </a>
                 </Nav.Link>
@@ -53,7 +54,7 @@ const Header = (): JSX.Element => {
               <Link href="/genres" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <FiPieChart size="1.5rem" />
+                    <FiPieChart size="24px" />
                     Top Genres
                   </a>
                 </Nav.Link>
@@ -61,7 +62,7 @@ const Header = (): JSX.Element => {
               <Link href="/recent" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <MdHistory size="1.5rem" />
+                    <MdHistory size="24px" />
                     Recent
                   </a>
                 </Nav.Link>
@@ -69,7 +70,7 @@ const Header = (): JSX.Element => {
               {/* <Link href="/playlists" passHref>
                 <Nav.Link className="px-3 g-5">
                   <a className="nav-icon text-decoration-none fw-light d-flex flex-column align-items-center px-2">
-                    <MdOutlineQueueMusic size="1.5rem" />
+                    <MdOutlineQueueMusic size="24px" />
                     Playlists
                   </a>
                 </Nav.Link>

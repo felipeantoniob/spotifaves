@@ -41,7 +41,7 @@ const Track = ({ ...track }: SpotifyApi.TrackObjectFull): JSX.Element => {
             onClick={handleClick}
           />
           <div className="position-absolute top-50 start-50 translate-middle text-light info-icon">
-            <MdInfo size="2rem" />
+            <MdInfo size="32px" />
           </div>
         </Col>
         <Col>

@@ -1,7 +1,12 @@
 import Image from 'next/image'
 import { Button, Col, Modal, Row } from 'react-bootstrap'
 
-import { TrackModalProps } from '../types/index'
+type TrackModalProps = {
+  isModalShowing: boolean
+  handleClose: () => void
+  track: SpotifyApi.TrackObjectFull | undefined
+  audioFeatures: SpotifyApi.AudioFeaturesObject | undefined
+}
 
 const TrackModal = ({
   //   audioAnalysis,

@@ -16,7 +16,7 @@ import useUserTopArtists from '../hooks/spotify/useUserTopArtists'
 import useFooterOnScroll from '../hooks/useFooterOnScroll'
 import useModal from '../hooks/useModal'
 
-import { TimeRangeType } from '../types'
+import { TimeRangeType } from '../components/TimeRangeRadio'
 import { getMultipleArtistsTopTracks } from '../utils/getMultipleArtistsTopTracks'
 import { shuffleTracks } from '../utils/shuffleTracks'
 import { timeRangeDescription } from '../utils/timeRangeDescription'

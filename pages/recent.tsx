@@ -5,6 +5,7 @@ import { Container, Row } from 'react-bootstrap'
 
 import CreatedPlaylistModal from '../components/CreatedPlaylistModal'
 import CreatePlaylistFooter from '../components/CreatePlaylistFooter'
+import Spinner from '../components/Spinner'
 import Track from '../components/Track'
 
 import useAddTracksToPlaylist from '../hooks/spotify/useAddTracksToPlaylist'
@@ -56,11 +57,9 @@ export default function Recent(): JSX.Element {
     signOut()
     router.push('/')
   }
-
   if (recentTracksQuery.isSuccess) {
     recentTracks = recentTracksQuery.data!.body.items.map((item) => item.track)
   }
-
   if (playlistQuery.isSuccess) {
     playlist = playlistQuery.data.body
   }
@@ -72,6 +71,11 @@ export default function Recent(): JSX.Element {
           <div className="d-flex align-items-center pb-5">
             <h2 className="fw-bold high-emphasis-text">Recent Tracks</h2>
           </div>
+          {recentTracksQuery.isLoading && (
+            <div>
+              <Spinner />
+            </div>
+          )}
           {recentTracksQuery.isSuccess && (
             <Row lg={1} className="mb-5">
               {recentTracks.map((track: SpotifyApi.TrackObjectFull, index) => (

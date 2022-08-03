@@ -5,14 +5,16 @@ import { Col, Container, Row } from 'react-bootstrap'
 
 import GenrePieChart from '../components/GenrePieChart'
 import Spinner from '../components/Spinner'
-import TimeRangeRadio from '../components/TimeRangeRadio'
-
+import TimeRangeRadio, { TimeRangeType } from '../components/TimeRangeRadio'
 import useUserTopArtists from '../hooks/spotify/useUserTopArtists'
-
-import { GenreObject, TimeRangeType } from '../types'
 import { getAllGenres } from '../utils/getAllGenres'
 import { getGenreChartData } from '../utils/getGenreChartData'
 import { getGenreFrequency } from '../utils/getGenreFrequency'
+
+export interface GenreObject {
+  genre: string
+  artists: string[]
+}
 
 let genreChartData: GenreObject[] = []
 let topArtists: SpotifyApi.ArtistObjectFull[] = []
